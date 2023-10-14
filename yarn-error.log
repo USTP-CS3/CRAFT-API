@@ -1,0 +1,38 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\LENOVO\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add pdf2json
+
+PATH: 
+  C:\Users\LENOVO\Desktop\SCRAPE\venv/Scripts;C:\Users\LENOVO\Desktop\SCRAPE\venv/Scripts;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\nodejs\;C:\Users\LENOVO\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\LENOVO\AppData\Local\Programs\Python\Python311\;C:\Users\LENOVO\AppData\Local\Microsoft\WindowsApps;C:\Users\LENOVO\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\LENOVO\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.8.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\LENOVO\Desktop\SCRAPE\package.json: Expected double-quoted property name in JSON at position 129
+      at JSON.parse (<anonymous>)
+      at C:\Users\LENOVO\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\LENOVO\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\LENOVO\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "SCRAPE",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "mihkuno",
+    "license": "MIT",
+    "type": "module",
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
