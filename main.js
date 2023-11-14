@@ -5,16 +5,13 @@ import PDFParser from "pdf2json";
 // Main (self-executing async function)
 (async function main() {
     
-    const filePath = "./cor.pdf";
+    const filePath = "./cor2.pdf";
     
     try {
-        var output = await get_student_info(filePath);
-        
-        // Uncomment this to show simplified data
-        console.log(output);
+        const output = await getCorInfo(filePath);
 
         // Uncomment this to show verbose data
-        // console.log(JSON.stringify(output, null, 4));
+        console.log(JSON.stringify(output, null, 4));
     } 
     catch (error) {
         console.error("Error in main:", error);
@@ -28,13 +25,13 @@ import PDFParser from "pdf2json";
 //
 // Public Functions
 
-async function get_student_info(filePath) {
+async function getCorInfo(filePath) {
     try {
-        return await _pdf_parser(filePath);
+        return await _getCorInfo(filePath);
     } 
     catch (error) {
         console.error(error);
-        throw error; // Propagate the error if needed
+        throw error;
     }
 }
 
@@ -44,36 +41,47 @@ async function get_student_info(filePath) {
 //
 // Private Functions
 
-function _pdf_parser(filePath) {
+function _getCorInfo(filePath) {
     return new Promise((resolve, reject) => {
         const pdfParser = new PDFParser();
         
         pdfParser.loadPDF(filePath);
         pdfParser.on("pdfParser_dataError", reject);
         pdfParser.on("pdfParser_dataReady", (pdfData) => {
-            const data = _pdf_to_textArray(pdfData);
-            const studentData = _get_student_data(data);
-            const subjectData = _get_subject_data(data);
+            const data = _getPdfTextArray(pdfData);
+            const studentData = _getStudentData(data);
+            const subjectData = _getSubjectData(data);
             resolve({ studentData, subjectData });
         });
     });
 }
 
-function _pdf_to_textArray(pdfData) {
+function _getPdfTextArray(pdfData) {
     // select first page text data
     const pageObject = pdfData['Pages'][0]['Texts'];
     // iterate text object and append to text array     
     const data = [];
-    for (const [index, textObject] of pageObject.entries()) {
+
+    let customIndex = 0;
+    for (const [fixedIndex, textObject] of pageObject.entries()) {
+        
         const text = decodeURIComponent(textObject['R'][0]['T']);
+        
+        // if no scholarship, push 'None' to the array
+        if (customIndex == 26 && text == 'Contact #:') {
+            data.push('N/A');
+            customIndex++; // customIndex will be 27
+        } 
+
         data.push(text);
+        customIndex++;
     }
     return data;
 }
 
-function _get_student_data(data) {
+function _getStudentData(data) {
     return {
-        // index < 32 is student data
+        // index <= 31 is student data
         document_title:  data[0],
         campus:          data[1],
         registration_no: data[15],
@@ -90,11 +98,11 @@ function _get_student_data(data) {
         scholarship:     data[26],
         nationality:     data[30],
         contact:         data[31],
-        // index > 38 is schedules data
+        // index >= 39 is schedules data
     };
 }
 
-function _get_subject_data(data) {
+function _getSubjectData(data) {
     // all index greater than 38 is subject, units, schedules data
     const subjects = [];
     for (let i = 39; i < data.length; i += 8) {
@@ -107,8 +115,16 @@ function _get_subject_data(data) {
         const isLastSubject = data[i].match(patternOfTotalUnit);
 
         if (isScheduleOfPreviousSubject) {
-            subjects[subjects.length - 1].schedule.push(data[i]);
+            subjects[subjects.length - 1].schedule.push(
+                _getRegexString(data[i], patternOfSchedule).result
+            );
+
+            subjects[subjects.length - 1].room.push(
+                _getRegexString(data[i], patternOfSchedule).residue
+            );
+
             subjects[subjects.length - 1].instructor.push(data[i + 1]);
+            
             i -= 6; // proceed to next iteration
         }
 
@@ -126,13 +142,13 @@ function _get_subject_data(data) {
                     credit:     data[i + 4],
                     code:       data[i + 6],
                     section:    data[i + 7],
-                    // schedule:   [data[i + 5]]
+
                     schedule:  [
-                        _extract_pattern(data[i + 5], patternOfSchedule).extract
+                        _getRegexString(data[i + 5], patternOfSchedule).result
                     ],
 
                     room: [
-                        _extract_pattern(data[i + 5], patternOfSchedule).remains
+                        _getRegexString(data[i + 5], patternOfSchedule).residue
                     ],
                 }
             );
@@ -142,16 +158,18 @@ function _get_subject_data(data) {
     return subjects;
 }
 
-function _extract_pattern(text, regex) {
-    // Replace 'yourRegexPattern' with your actual regex pattern
+function _getRegexString(text, regex) {
     const match = text.match(regex);
 
-    if (match) {
-        const extract = match[0];
-        const remains = text.replace(extract, '').trim();
-        return { extract, remains };
+    if (match) { // only get the first match
+        // string that matches the regex
+        const result = match[0]; 
+        
+        // string that does not match the regex
+        const residue = text.replace(result, '').trim(); 
+        return { result, residue };
     } 
     else {
-        console.error("Regex Error:", remains, extract);
+        console.error("Something went wrong in _getRegexString()", text, regex);
     }
 }
