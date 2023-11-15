@@ -5,13 +5,13 @@ import PDFParser from "pdf2json";
 // Main (self-executing async function)
 (async function main() {
     
-    const filePath = "./cor2.pdf";
-    
+    const filePath = "./cor.pdf";
+
     try {
         const output = await getCorInfo(filePath);
+        const structure = JSON.stringify(output, null, 4);
 
-        // Uncomment this to show verbose data
-        console.log(JSON.stringify(output, null, 4));
+        console.log(structure);
     } 
     catch (error) {
         console.error("Error in main:", error);
@@ -26,10 +26,13 @@ import PDFParser from "pdf2json";
 // Public Functions
 
 async function getCorInfo(filePath) {
+
+    // TODO: check if document title is 'CERTIFICATEOFREGISTRATION'
     try {
         return await _getCorInfo(filePath);
     } 
     catch (error) {
+        // TODO: make a log file for all errors that occur
         console.error(error);
         throw error;
     }
@@ -50,15 +53,16 @@ function _getCorInfo(filePath) {
         pdfParser.on("pdfParser_dataReady", (pdfData) => {
             const data = _getPdfTextArray(pdfData);
             const studentData = _getStudentData(data);
-            const subjectData = _getSubjectData(data);
+            const subjectData = _getScheduleData(data);
             resolve({ studentData, subjectData });
         });
     });
 }
 
 function _getPdfTextArray(pdfData) {
-    // select first page text data
+    // select only first page text
     const pageObject = pdfData['Pages'][0]['Texts'];
+
     // iterate text object and append to text array     
     const data = [];
 
@@ -67,22 +71,29 @@ function _getPdfTextArray(pdfData) {
         
         const text = decodeURIComponent(textObject['R'][0]['T']);
         
-        // if no scholarship, push 'None' to the array
-        if (customIndex == 26 && text == 'Contact #:') {
+        // TODO: if there's address, see if it offsets the index
+        // if no scholarship or contact, push 'N/A' to the array
+        if (
+               customIndex == 26 && text.replaceAll(' ', '') == 'Contact#:'  
+            || customIndex == 31 && text.replaceAll(' ', '') == 'UNIT'  
+        ) {
             data.push('N/A');
+            // console.log(customIndex, 'N/A');
             customIndex++; // customIndex will be 27
         } 
 
         data.push(text);
+        // console.log(customIndex, text);
         customIndex++;
     }
+
     return data;
 }
 
 function _getStudentData(data) {
     return {
         // index <= 31 is student data
-        document_title:  data[0],
+        document_title:  data[0].replaceAll(' ',''),
         campus:          data[1],
         registration_no: data[15],
         id:              data[16],
@@ -102,74 +113,82 @@ function _getStudentData(data) {
     };
 }
 
-function _getSubjectData(data) {
-    // all index greater than 38 is subject, units, schedules data
+function _getScheduleData(data) {
     const subjects = [];
-    for (let i = 39; i < data.length; i += 8) {
 
-       // check if first entry is a schedule, then append to previous object's schedule
-        const patternOfSchedule = /((S|M|T|W|Th|F)*(\s\d\d?:\d\d\s(AM|PM)))\s-(\s\d\d?:\d\d\s(AM|PM))/g
+    const patternOfSchedule = /(^(S|M|T|W|Th|F)*(\s\d\d?:\d\d\s(AM|PM)))\s-(\s\d\d?:\d\d\s(AM|PM))/g;
+    const patternOfWeekday  = /^(S|M|Th|T|W|F)*/g;
+    const patternOfTime     = /\d\d?:\d\d\s(AM|PM)/g;
+
+    const _parseSchedule = (scheduleString) => {
+        const schedule   = scheduleString.match(patternOfSchedule)[0];
+        const room       = scheduleString.replace(schedule, '').trim();
+        const mixedDays  = schedule.match(patternOfWeekday)[0];
+        const timeStart  = schedule.match(patternOfTime)[0];
+        const timeEnd    = schedule.match(patternOfTime)[1];
+        const weekdays   = [];
+
+        for (let j = 0; j < mixedDays.length; j++) {
+            if (mixedDays[j] == 'T' && mixedDays[j + 1] == 'h') {
+                weekdays.push('Th');
+                j++;
+                continue;
+            }
+            weekdays.push(mixedDays[j]);
+        }
+
+        return { room, weekdays, timeStart, timeEnd };
+    };
+
+    for (let i = 39; i < data.length; i += 8) {
+        const isLastSubject = data[i] === 'Total Unit(s)';
+        if (isLastSubject) { break; }
+
         const isScheduleOfPreviousSubject = data[i].match(patternOfSchedule);
 
-        const patternOfTotalUnit = /[Tt]otal\s[Uu]nit(\(s\))?/g
-        const isLastSubject = data[i].match(patternOfTotalUnit);
-
         if (isScheduleOfPreviousSubject) {
-            subjects[subjects.length - 1].schedule.push(
-                _getRegexString(data[i], patternOfSchedule).result
-            );
+            const previousSubject = subjects.at(-1);
+            const { room, weekdays, timeStart, timeEnd } = _parseSchedule(data[i]);
 
-            subjects[subjects.length - 1].room.push(
-                _getRegexString(data[i], patternOfSchedule).residue
-            );
+            weekdays.forEach((weekday) => {
+                previousSubject.schedule.push({
+                    instructor: data[i + 1],
+                    weekday,
+                    timeStart,
+                    timeEnd,
+                    room,
+                });
+            });
 
-            subjects[subjects.length - 1].instructor.push(data[i + 1]);
-            
-            i -= 6; // proceed to next iteration
-        }
-
-        // check if its there are no more subject
-        else if (isLastSubject) { break; }
+            i -= 6; // proceed to the next iteration
+        } 
         
-        // otherwise, append the new subject
         else {
-            subjects.push(
-                {
-                    instructor: [data[i]],
-                    subject:    data[i + 1],
-                    lecture:    data[i + 2],
-                    laboratory: data[i + 3],
-                    credit:     data[i + 4],
-                    code:       data[i + 6],
-                    section:    data[i + 7],
+            const subject = {
+                subject: data[i + 1],
+                lecture: data[i + 2],
+                laboratory: data[i + 3],
+                credit: data[i + 4],
+                code: data[i + 6],
+                section: data[i + 7],
+                schedule: [],
+            };
 
-                    schedule:  [
-                        _getRegexString(data[i + 5], patternOfSchedule).result
-                    ],
+            const { room, weekdays, timeStart, timeEnd } = _parseSchedule(data[i + 5]);
 
-                    room: [
-                        _getRegexString(data[i + 5], patternOfSchedule).residue
-                    ],
-                }
-            );
+            weekdays.forEach((weekday) => {
+                subject.schedule.push({
+                    instructor: data[i],
+                    weekday,
+                    timeStart,
+                    timeEnd,
+                    room,
+                });
+            });
+
+            subjects.push(subject);
         }
     }
-    
+
     return subjects;
-}
-
-function _getRegexString(text, regex) {
-    const match = text.match(regex);
-
-    if (match) { // only get the first match
-        // string that matches the regex
-        const result = match[0]; 
-        
-        // string that does not match the regex
-        const residue = text.replace(result, '').trim(); 
-        return { result, residue };
-    } 
-    else {
-        console.error("Something went wrong in _getRegexString()", text, regex);
-    }
 }
