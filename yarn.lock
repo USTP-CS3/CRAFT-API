@@ -2,17 +2,3 @@
 # yarn lockfile v1
 
 
-"@xmldom/xmldom@^0.8.6":
-  version "0.8.7"
-
-pdf2json@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.npmjs.org/pdf2json/-/pdf2json-3.0.4.tgz"
-  integrity sha512-NKmSg78W5V/T3Qvp+TPkYeARdP/XzxBTlhRGdDMrOI1beyI72JxW5u4yy5825ge3opzu4HF0xDgg+HZbYvbr4g==
-  dependencies:
-    "@xmldom/xmldom" "^0.8.6"
-
-pdftohtmljs@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/pdftohtmljs/-/pdftohtmljs-0.6.0.tgz"
-  integrity sha512-9ihk3VQNwl45Qcj20p7Y6bFJxobvluvJVg24m+WZTYOxKqd5X/nNIWKj8X6UycTfrE7H6ittXWqV+UE/1q62yg==
