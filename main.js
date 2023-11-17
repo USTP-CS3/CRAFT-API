@@ -1,11 +1,9 @@
-
 import { getCorInfo } from "./lib/extractor.js";
 
-//
 // Main (self-executing async function)
 (async function main() {
     
-    const filePath = "./mics/cor3.pdf";
+    const filePath = "./misc/cor3.pdf";
 
     try {
         const output = await getCorInfo(filePath);
@@ -14,7 +12,7 @@ import { getCorInfo } from "./lib/extractor.js";
         console.log(structure);
     } 
     catch (error) {
-        console.error("Error in main:", error);
+        console.error("Error in main:", error.message);
     }
 
 })();
