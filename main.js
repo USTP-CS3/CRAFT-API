@@ -5,7 +5,7 @@ import { getCorInfo } from "./lib/extractor.js";
 // Main (self-executing async function)
 (async function main() {
     
-    const filePath = "./cor3.pdf";
+    const filePath = "./mics/cor3.pdf";
 
     try {
         const output = await getCorInfo(filePath);
