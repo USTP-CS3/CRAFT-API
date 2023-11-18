@@ -17,6 +17,9 @@ What makes this system even more remarkable is its dual benefit. It helps depart
 
 As CRAFT API continues to demonstrate stability and effectiveness within our department, we eagerly anticipate the opportunity to expand its reach across the campus.
 
+
+<hr>
+
 ### Objective
 
 **Scheduling**
@@ -24,6 +27,8 @@ As CRAFT API continues to demonstrate stability and effectiveness within our dep
 
 **Profiling**
 > The focal entity can select predefined questions to the target population and a survey form will be distributed to the students and collected to a database for analysis. The benefit of this rather than a regular survey can detect changes or patterns over time that could serve as an opening to potential research areas and development.
+
+<hr>
 
 
 ### Project Design
@@ -44,6 +49,7 @@ As CRAFT API continues to demonstrate stability and effectiveness within our dep
 
 ![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/96b282d6-9ee4-426b-81f4-9037a6cdaae8)
 
+<hr>
 
 ### Project Phases
 > Phase 1.1: Extractor
