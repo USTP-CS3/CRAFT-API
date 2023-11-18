@@ -6,7 +6,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "axios": "^1.6.2",
+    "exceljs": "^4.4.0",
     "pdf2json": "^3.0.4",
-    "pdftohtmljs": "^0.6.0"
+    "pdftohtmljs": "^0.6.0",
+    "puppeteer": "^21.5.2"
   }
 }
