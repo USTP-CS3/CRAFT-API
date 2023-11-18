@@ -28,8 +28,9 @@ npm manifest:
     "main": "index.js",
     "author": "mihkuno",
     "license": "MIT",
-    "type": "module",
+    "type": "module"
   }
+
 
 yarn manifest: 
   No manifest
