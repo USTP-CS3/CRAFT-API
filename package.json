@@ -1,12 +1,22 @@
 {
-    "name": "SCRAPE",
-    "version": "1.0.0",
-    "main": "main.js",
-    "author": "mihkuno",
-    "license": "MIT",
-    "type": "module",
-    "dependencies": {
-      "pdf2json": "^3.0.4",
-      "pdftohtmljs": "^0.6.0"
-    }
+  "name": "SCRAPE",
+  "version": "1.0.0",
+  "main": "main.js",
+  "author": "mihkuno",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "pdf2json": "^3.0.5",
+    "pdftohtmljs": "^0.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "babel-loader": "^9.1.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "scripts": {
+    "build": "webpack"
   }
+}
