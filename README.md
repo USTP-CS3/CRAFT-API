@@ -28,6 +28,24 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 > The focal entity can select predefined questions to the target population and a survey form will be distributed to the students and collected to a database for analysis. The benefit of this rather than a regular survey can detect changes or patterns over time that could serve as an opening to potential research areas and development.
 
 
+## Project Structure
+```
+[lib]
+    ├── extractor.js
+    ├── scheduler.js
+    ├── surveyor.js
+    ├── profiler.js
+    └── reporter.js
+[misc]
+    ├── *.json
+    ├── *.csv
+    └── *.pdf
+[sql]
+    └── init.sql
+main.js
+package.json
+README.md
+```
 
 ## Project Design
 
@@ -50,33 +68,34 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 
 
 ## Project Phases
-> Phase 1.1: Extractor
-> 
-> Phase 1.2: Scheduler
 
-**Database Design**
+`Phase 1.1: Extractor`
+
+`Phase 1.2: Scheduler`
+
+- Entity Relationship Diagram
 ![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/099ac883-cb2e-4074-ae3f-d53e774e6a7e)
 
-> Phase 1.3: Reporter
-> 
-> Phase 1.4: Testing           (CS)
-> 
-> Phase 1.5: Testing           (CITC)
-> 
-> Phase 2.1: Profiler
-> 
-> Phase 2.2: Surveyor
-> 
-> Phase 2.3: Reporter
-> 
-> Phase 2.4: Testing           (CS)
-> 
-> Phase 2.5: Testing           (CITC)
-> 
-> Phase 3: Inter-Organizations (USG)
-> 
-> Phase 4: Inter-Department    (OSA)
-> 
-> Phase 5: System-Wide         (USTP)
-> 
-> Phase 6: External
+`Phase 1.3: Reporter`
+
+`Phase 1.4: Testing           (CS)`
+
+`Phase 1.5: Testing           (CITC)`
+
+`Phase 2.1: Profiler`
+
+`Phase 2.2: Surveyor`
+
+`Phase 2.3: Reporter`
+
+`Phase 2.4: Testing           (CS)`
+
+`Phase 2.5: Testing           (CITC)`
+
+`Phase 3: Inter-Organizations (USG)`
+
+`Phase 4: Inter-Department    (OSA)`
+
+`Phase 5: System-Wide         (USTP)`
+
+`Phase 6: External`
