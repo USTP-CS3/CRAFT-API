@@ -43,6 +43,8 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
     └── *.pdf
 [sql]
     └── init.sql
+[log]
+    └── *.log
 main.js
 package.json
 README.md
