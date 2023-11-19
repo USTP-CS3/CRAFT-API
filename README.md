@@ -31,6 +31,7 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 ## Project Structure
 ```
 [lib]
+    ├── logger.js
     ├── extractor.js
     ├── scheduler.js
     ├── surveyor.js
