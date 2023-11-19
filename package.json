@@ -6,6 +6,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "mysql": "^2.18.1",
     "pdf2json": "^3.0.4",
     "pdftohtmljs": "^0.6.0"
   }
