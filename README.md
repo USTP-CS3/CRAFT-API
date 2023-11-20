@@ -30,6 +30,15 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 
 ## Project Structure
 ```
+[db]
+    ├── connect.js
+    ├── initialize.js
+    └── [model]
+        ├── Faculty.js
+        ├── Room.js
+        ├── Schedule.js
+        ├── Student.js
+        └── Subject.js
 [lib]
     ├── logger.js
     ├── extractor.js
@@ -41,8 +50,6 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
     ├── *.json
     ├── *.csv
     └── *.pdf
-[sql]
-    └── init.sql
 [log]
     └── *.log
 main.js
