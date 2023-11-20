@@ -1,12 +1,13 @@
 {
-  "name": "SCRAPE",
-  "version": "1.0.0",
+  "name": "craft-api",
+  "version": "1.2",
   "main": "main.js",
   "author": "mihkuno",
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "mysql2": "^3.6.3",
     "pdf2json": "^3.0.4",
-    "pdftohtmljs": "^0.6.0"
+    "sequelize": "^6.35.1"
   }
 }
