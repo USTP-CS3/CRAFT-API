@@ -1,26 +1,23 @@
-/**
- * Contains the database object model connection information
- */
-
 import { Sequelize } from "sequelize";
 
-
 /**
- * The user credentials to the database
+ * The user credentials to connect the database
  */
 const credentials = {
+    database: 'DB_CRAFT',
     username: 'root',
     password: 'password',
 };
 
-
-/**
- * The options for the database and models
- */
 const options = {
-    database: 'DB_CRAFT',
-    // make table name same as model
-    freezeTableName: true, 
+    host: 'localhost',
+    dialect: 'mysql',
+    define: {
+        // disable auto-generated timestamp columns
+        timestamps: false,
+        // make table names same as model
+        freezeTableName: true,
+    }
 };
 
 
@@ -28,11 +25,12 @@ const options = {
  * The session to the database
  * @type {Sequelize}
  */
-const session = new Sequelize(options.database, 
-credentials.username, credentials.password, {
-    host: 'localhost',
-    dialect: 'mysql',
-});
+const session = new Sequelize(
+    credentials.database, 
+    credentials.username, 
+    credentials.password, 
+    options
+);
 
 
-export { options, session, credentials };
+export { session, credentials };

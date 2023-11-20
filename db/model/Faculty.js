@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session, options } from '../database.js';
+import { session } from '../database.js';
 
 const fields = {
   
@@ -12,10 +12,17 @@ const fields = {
 
     name: {
         type: DataTypes.STRING(100),
+        unique: true,
         allowNull: false,
     },
+
+    created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    }
 };
 
-const Faculty = session.define('Faculty', fields, options);
+const Faculty = session.define('Faculty', fields);
 
 export default Faculty;

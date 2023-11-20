@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session, options } from '../database.js';
+import { session } from '../database.js';
 
 const fields = {
   
@@ -39,6 +39,22 @@ const fields = {
         type: DataTypes.CHAR(4),
         allowNull: false,
     },
+
+    created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    }
+};
+
+const options = {
+    // composite unique constraint
+    indexes: [
+      {
+        fields: ['section', 'day', 'semester', 'year'],
+        unique: true,
+      }
+    ]
 };
 
 const Schedule = session.define('Schedule', fields, options);

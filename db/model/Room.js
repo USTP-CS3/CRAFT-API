@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session, options } from '../database.js';
+import { session } from '../database.js';
 
 const fields = {
   
@@ -12,6 +12,7 @@ const fields = {
 
     description: {
         type: DataTypes.STRING(50),
+        unique: true,
         allowNull: false,
     },
 
@@ -29,8 +30,14 @@ const fields = {
         type: DataTypes.TINYINT.UNSIGNED,
         allowNull: true,
     },
+
+    created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    }
 };
 
-const Room = session.define('Room', fields, options);
+const Room = session.define('Room', fields);
 
 export default Room;

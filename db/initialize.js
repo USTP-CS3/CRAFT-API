@@ -11,7 +11,7 @@ import Schedule from './model/Schedule.js';
 import Faculty  from './model/Faculty.js';
 import Room     from './model/Room.js';
 
-import { options, session, credentials } from "./database.js";
+import { credentials, session } from "./database.js";
 
 
 // (self-executing async function)--------------------------------------------------------------------
@@ -53,11 +53,11 @@ async function createDatabase() {
 
     try {                
         // Creates the DB_CRAFT database
-        await connection.query(`CREATE DATABASE ${options.database};`);
+        await connection.query(`CREATE DATABASE ${credentials.database};`);
         console.log('Database DB_CRAFT created successfully');
     } 
     catch (err) {
-        console.log(`Failed to create database ${options.database}`);
+        console.log(`Failed to create database ${credentials.database}`);
     } 
     finally {
         // Close the connection

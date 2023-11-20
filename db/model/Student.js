@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session, options } from '../database.js';
+import { session } from '../database.js';
 
 const fields = {
   
@@ -63,8 +63,24 @@ const fields = {
 
     contact_no: {
         type: DataTypes.CHAR(10),
-        allowNull: false
+        allowNull: true
     },
+
+    created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    }
+};
+
+const options = {
+    // composite unique constraint
+    indexes: [
+      {
+        fields: ['first_name', 'last_name'],
+        unique: true,
+      }
+    ]
 };
 
 const Student = session.define('Student', fields, options);
