@@ -1,3 +1,5 @@
+-- left for debugging purpose
+
 DELIMITER //
 
 CREATE PROCEDURE GetScheduleFrequency()

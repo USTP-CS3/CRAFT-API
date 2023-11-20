@@ -3,8 +3,10 @@ import { dirname } from 'path';
 import { getCorInfo } from './lib/extractor.js';
 import fs from 'fs';
 import path from 'path';
-import Database from "./lib/database.js";
-import Scheduler from "./lib/scheduler.js";
+
+// lib interlinked for debugging purposes 
+// import Database from "./lib/database.js";
+// import Scheduler from "./lib/scheduler.js";
 
 /**
  * Logs a message to a file.
@@ -76,7 +78,8 @@ export function logToFile(message, filename = 'log-datetime.log') {
     }
 })();
 
-/*
+
+/* left for debugging purpose
 // change with MySQL user credentials
 const dbConfig = {
   host: 'localhost',

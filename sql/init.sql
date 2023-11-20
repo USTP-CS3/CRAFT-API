@@ -96,6 +96,19 @@ CREATE TABLE StudentSchedule (
 -- STORED PROCEDURES-------------------------------------------------------------------------------------------------
 
 
+-- -- Student Date Frequency Procedure
+-- DELIMITER //
+--
+-- CREATE PROCEDURE GetScheduleFrequency()
+-- BEGIN
+--    SELECT scheduled_date, COUNT(DISTINCT student_id) as frequency
+--    FROM schedule
+--    GROUP BY scheduled_date;
+-- END //
+--
+-- DELIMITER ;
+
+
 -- -- Student Table Procedure
 -- DELIMITER $$
 -- CREATE DEFINER={{MYSQL_USER}}@{{MYSQL_HOST}} PROCEDURE usp_student_add_or_edit(
