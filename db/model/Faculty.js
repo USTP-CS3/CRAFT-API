@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize, options } from '../db/connect.js';
+import { session, options } from '../connect.js';
 
 const fields = {
   
@@ -16,6 +16,6 @@ const fields = {
     },
 };
 
-const Faculty = sequelize.define('Faculty', fields, options);
+const Faculty = session.define('Faculty', fields, options);
 
 export default Faculty;

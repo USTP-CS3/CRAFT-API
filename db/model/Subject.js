@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize, options } from '../db/connect.js';
+import { session, options } from '../connect.js';
 
 const fields = {
   
@@ -31,6 +31,6 @@ const fields = {
     },
 };
 
-const Subject = sequelize.define('Subject', fields, options);
+const Subject = session.define('Subject', fields, options);
 
 export default Subject;

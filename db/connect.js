@@ -1,18 +1,20 @@
 import { Sequelize } from "sequelize";
 
-const session = {
+
+const credentials = {
     username: 'root',
     password: 'password',
 };
 
-const sequelize = new Sequelize('DB_CRAFT', 
-session.username, session.password, {
+const session = new Sequelize('DB_CRAFT', 
+credentials.username, credentials.password, {
     host: 'localhost',
     dialect: 'mysql',
-}); 
-
+});
+ 
 const options = {
-    freezeTableName: true, // table name will be same as model name
+    // make table name same as model
+    freezeTableName: true, 
 };
 
-export {sequelize, options, session};
+export { options, session, credentials };
