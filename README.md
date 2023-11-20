@@ -31,7 +31,7 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 ## Project Structure
 ```
 [db]
-    ├── connect.js
+    ├── database.js
     ├── initialize.js
     └── [model]
         ├── Faculty.js

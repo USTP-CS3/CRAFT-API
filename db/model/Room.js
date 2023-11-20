@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session, options } from '../connect.js';
+import { session, options } from '../database.js';
 
 const fields = {
   

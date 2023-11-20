@@ -1,3 +1,8 @@
+/**
+ * Run this script to force sync the database and tables from the models
+ * Note: This will DELETE all records in the database
+ */
+
 import { Sequelize } from "sequelize";
 
 import Student  from './model/Student.js';
@@ -6,49 +11,22 @@ import Schedule from './model/Schedule.js';
 import Faculty  from './model/Faculty.js';
 import Room     from './model/Room.js';
 
-// global session of the database and models
-import { session, credentials } from './connect.js';
+import { options, session, credentials } from "./database.js";
 
 
-// Initialize (self-executing async function)-----------------------------------------------------------------
-(async function initialize() {
+// (self-executing async function)--------------------------------------------------------------------
+(async function() {
 
+    setModelRelationship();
     await createDatabase();
-    await createTables();
+    await syncTableModel();
 
 })();
 
 
-async function createDatabase() {
+// Functions------------------------------------------------------------------------------------------
 
-    // Connect to a new session without a database
-    const connection = new Sequelize('', 
-    credentials.username, credentials.password, {
-        host: 'localhost',
-        dialect: 'mysql',
-    });
-
-
-    try { // Creates the DB_CRAFT database
-        
-        await connection.query("CREATE DATABASE `DB_CRAFT`;");
-        console.log('Database DB_CRAFT created successfully');
-
-    } 
-    
-    catch (err) {
-        console.log('Failed to create database DB_CRAFT');
-    } 
-    
-    finally {
-        // Close the connection without a database
-        await connection.close();
-    }
-}
-
-
-async function createTables() {
-
+function setModelRelationship() {
     // define relationships
     Student.belongsToMany(Schedule, {through: 'StudentSchedule'});
     Schedule.belongsToMany(Student, {through: 'StudentSchedule'});
@@ -61,22 +39,46 @@ async function createTables() {
 
     Room.hasMany(Schedule);
     Schedule.belongsTo(Room);
+}
 
 
-    try { // Sync session to database
-        
+async function createDatabase() {
+    
+    // Create a new session without a database
+    const connection = new Sequelize('', 
+    credentials.username, credentials.password, {
+        host: 'localhost',
+        dialect: 'mysql',
+    });
+
+    try {                
+        // Creates the DB_CRAFT database
+        await connection.query(`CREATE DATABASE ${options.database};`);
+        console.log('Database DB_CRAFT created successfully');
+    } 
+    catch (err) {
+        console.log(`Failed to create database ${options.database}`);
+    } 
+    finally {
+        // Close the connection
+        await connection.close();
+    }    
+
+}
+
+
+async function syncTableModel() {
+    
+    try { 
+        // Sync session to database
         await session.sync({ force: true });
         console.log('Tables created successfully!');
-
     } 
-    
     catch (err) {
         console.log('Failed to create tables');
     } 
-    
     finally {
-        // Close the session with the database
+        // Close the session
         await session.close();
     }
-
 }
