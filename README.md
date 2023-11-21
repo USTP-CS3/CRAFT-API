@@ -84,7 +84,8 @@ README.md
 `Phase 1.2: Scheduler`
 
 - Entity Relationship Diagram
-![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/099ac883-cb2e-4074-ae3f-d53e774e6a7e)
+
+![Screenshot 2023-11-21 105813](https://github.com/USTP-CS3/CRAFT-API/assets/26486389/b6847bbb-389e-42a4-a86e-44f263164536)
 
 `Phase 1.3: Reporter`
 
