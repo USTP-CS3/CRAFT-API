@@ -5,29 +5,34 @@
 
 import { Sequelize } from "sequelize";
 
-import Student  from './model/Student.js';
-import Subject  from './model/Subject.js';	
-import Schedule from './model/Schedule.js';
-import Faculty  from './model/Faculty.js';
-import Room     from './model/Room.js';
+import Student  from '../model/Student.js';
+import Subject  from '../model/Subject.js';	
+import Schedule from '../model/Schedule.js';
+import Faculty  from '../model/Faculty.js';
+import Room     from '../model/Room.js';
 
-import { credentials, session } from "./database.js";
+import { credentials } from "../database.js";
+import { synchronize } from "./database.js";
 
 
 // (self-executing async function)--------------------------------------------------------------------
 (async function() {
 
-    setModelRelationship();
-    await createDatabase();
-    await syncTableModel();
+    relationship();
+    await database();
+    await synchronize({
+        force: true
+    });
 
 })();
 
 
 // Functions------------------------------------------------------------------------------------------
 
-function setModelRelationship() {
-    // define relationships
+/**
+ * Define model relationships
+ */
+function relationship() {
     Student.belongsToMany(Schedule, {through: 'StudentSchedule'});
     Schedule.belongsToMany(Student, {through: 'StudentSchedule'});
 
@@ -42,7 +47,10 @@ function setModelRelationship() {
 }
 
 
-async function createDatabase() {
+/**
+ * Establish connection and create database if not exists
+ */
+async function database() {
     
     // Create a new session without a database
     const connection = new Sequelize('', 
@@ -64,21 +72,4 @@ async function createDatabase() {
         await connection.close();
     }    
 
-}
-
-
-async function syncTableModel() {
-    
-    try { 
-        // Sync session to database
-        await session.sync({ force: true });
-        console.log('Tables created successfully!');
-    } 
-    catch (err) {
-        console.log('Failed to create tables');
-    } 
-    finally {
-        // Close the session
-        await session.close();
-    }
 }

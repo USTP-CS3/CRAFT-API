@@ -33,4 +33,16 @@ const session = new Sequelize(
 );
 
 
-export { session, credentials };
+/**
+ * Synchronize the model with the database
+ * @param {Object} options 
+ */
+const synchronize = async (options) => {
+    session.sync(options)
+    .then(() => console.log('Synchronized database successfully! '))
+    .catch(() => console.error('Failed synchronizing database:'))
+    .finally(() => session.close());
+};
+
+
+export { session, credentials, synchronize };
