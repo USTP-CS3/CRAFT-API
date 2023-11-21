@@ -1,4 +1,4 @@
-![Screenshot 2023-11-21 105813](https://github.com/USTP-CS3/CRAFT-API/assets/26486389/39eb7310-4d6c-45da-9cfc-f1d89a3f4a24)![Screenshot 2023-11-21 105813](https://github.com/USTP-CS3/CRAFT-API/assets/26486389/d1acf64a-2305-4c2f-bbbc-0a0644d3c110)# CRAFT-API
+# CRAFT-API
 Student Scheduler &amp; Profiling System
 
 ![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/efc210dc-7a39-45a6-9644-2c40d0037f77)
