@@ -4,30 +4,9 @@ Student Scheduler &amp; Profiling System
 ![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/efc210dc-7a39-45a6-9644-2c40d0037f77)
 
 
-## Getting Started
-1. Clone this repository `git clone https://github.com/USTP-CS3/CRAFT-API.git`
-1. Install packages with `yarn install`
-2. Open `db/database.js` then configure the connection.
-3. Run `yarn setup` to synchronize models to the database.
-4. Run `yarn start` to execute main.js
-
-
-## Dependencies
-`Winston   - used for creating formatted logs`
-
-`Chalk     - used with winston to color logs`
-
-`Sequelize - an object-relational mapping library`
-
-`MySQL2    - mysql client for node.js`
-
-`Pdf2Json  - used to extract text in pdf files.`
-
-
-
 ## Rationale
 
-In the ever-changing world of education, we're introducing a Collaborative Resource and Feedback Tool (CRAFT API), a student profiling system designed to simplify student life and contribute to community development.
+In the ever-changing world of education, we're introducing a **Collaborative Resource and Feedback Tool**, a student profiling system designed to simplify student life and contribute to community development.
 
 Here's how CRAFT API works: 
 1. Entity send students a registration and survey form.
@@ -43,16 +22,51 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 
 **Scheduler**
 
-Provides information about a certain population's availability levels. It provides insight into whether a specific date is appropriate for the target audience.
+> Provides information about a certain population's availability levels. It provides insight into whether a specific date is appropriate for the target audience.
 
 
 **Profiling**
 
-The focal entity can select predefined questions to the target population and a survey form will be distributed to the students and collected to a database for analysis. The benefit of this rather than a regular survey can detect changes or patterns over time that could serve as an opening to potential research areas and development.
+> The focal entity can select predefined questions to the target population and a survey form will be distributed to the students and collected to a database for analysis. The benefit of this rather than a regular survey can detect changes or patterns over time that could serve as an opening to potential research areas and development.
 
 
 
-## Project Structure
+## Getting Started
+1. Clone this repository `git clone https://github.com/USTP-CS3/CRAFT-API.git`
+1. Install packages with `yarn install`
+2. Open `db/database.js` then configure the connection.
+3. Run `yarn setup` to synchronize models to the database.
+4. Run `yarn start` to execute main.js
+
+
+## Dependencies
+- **Winston**   - used for creating formatted logs
+
+- **Chalk**     - used with winston to color logs
+
+- **Sequelize** - an object-relational mapping library
+
+- **MySQL2**    - mysql client for node.js
+
+- **Pdf2Json**  - used to extract text in pdf files.
+
+
+## Directories
+
+- **db**    - database related files
+
+- **model** - object-relation mapping
+
+- **util**  - executable scripts
+
+- **lib**   - development modules
+
+- **misc**  - miscellaneous files
+
+- **log**   - winston generated logs
+
+
+## Structure
 ```
 [db]
     ├── database.js
@@ -82,20 +96,8 @@ package.json
 README.md
 ```
 
-`db    - database related files`
 
-`model - object-relation mapping`
-
-`util  - executable scripts`
-
-`lib   - development modules`
-
-`misc  - miscellaneous files`
-
-`lob   - winston generated logs`
-
-
-## Libraries
+## Modules
 
 **Extractor - extracts and caches the content of _form responses_ and _pdf_ files**
 
@@ -111,7 +113,7 @@ README.md
 
 
 
-## Project Phases
+## Stages
 
 `Phase 1.1: Extractor`
 
