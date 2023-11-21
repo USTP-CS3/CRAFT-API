@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 /**
- * The user credentials to connect the database
+ * The user credentials to connect the database 
  */
 const credentials = {
     database: 'DB_CRAFT',
@@ -9,20 +9,21 @@ const credentials = {
     password: 'password',
 };
 
+/**
+ * The connection options of the model to the database
+ */
 const options = {
     host: 'localhost',
     dialect: 'mysql',
     define: {
-        // disable auto-generated timestamp columns
-        timestamps: false,
-        // make table names same as model
-        freezeTableName: true,
+        timestamps: false,     // disable auto-generated timestamp columns
+        freezeTableName: true, // make table names same as model
     }
 };
 
 
 /**
- * The session to the database
+ * The session object to the database
  * @type {Sequelize}
  */
 const session = new Sequelize(
@@ -37,12 +38,11 @@ const session = new Sequelize(
  * Synchronize the model with the database
  * @param {Object} options 
  */
-const synchronize = async (options) => {
-    session.sync(options)
-    .then(() => console.log('Synchronized database successfully! '))
-    .catch(() => console.error('Failed synchronizing database:'))
-    .finally(() => session.close());
+const synchronize = async function(options) {
+
+    await session.sync(options);
+    await session.close();
+
 };
 
-
-export { session, credentials, synchronize };
+export { session, options, credentials, synchronize };

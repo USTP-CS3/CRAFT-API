@@ -32,13 +32,14 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 ```
 [db]
     ├── database.js
-    ├── initialize.js
-    └── [model]
+    ├── [model]
         ├── Faculty.js
         ├── Room.js
         ├── Schedule.js
         ├── Student.js
         └── Subject.js
+    └── [util]
+        └── initialize.js
 [lib]
     ├── logger.js
     ├── extractor.js

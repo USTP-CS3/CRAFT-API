@@ -6,8 +6,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "chalk": "^5.3.0",
     "mysql2": "^3.6.3",
     "pdf2json": "^3.0.4",
-    "sequelize": "^6.35.1"
+    "sequelize": "^6.35.1",
+    "winston": "^3.11.0"
   }
 }
