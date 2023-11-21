@@ -64,7 +64,7 @@ import { credentials, options, synchronize } from '../database.js';
     catch (error) {
         
         // If the connection fails, log the error
-
+        Logger.info(JSON.stringify(credentials, null, 4));
         Logger.error(`${error.name}: ${error.message}`);
         return;
 
@@ -103,6 +103,7 @@ import { credentials, options, synchronize } from '../database.js';
         // Synchronize the models with the database
 
         await synchronize({ force: true });
+        Logger.info(JSON.stringify(credentials, null, 4));
         Logger.success('Successfully synchronized models to database.');
     
     } 

@@ -5,6 +5,10 @@
   "author": "mihkuno",
   "license": "MIT",
   "type": "module",
+  "scripts": {
+    "setup": "node db/util/setup.js",
+    "start": "node main.js"
+  },
   "dependencies": {
     "chalk": "^5.3.0",
     "mysql2": "^3.6.3",
