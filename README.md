@@ -33,10 +33,10 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 
 ## Getting Started
 1. Clone this repository `git clone https://github.com/USTP-CS3/CRAFT-API.git`
-1. Install packages with `yarn install`
+1. Install packages with `pnpm install`
 2. Open `db/database.js` then configure the connection.
-3. Run `yarn setup` to synchronize models to the database.
-4. Run `yarn start` to execute main.js
+3. Run `pnpm sync` to synchronize models to the database.
+4. Run `pnpm start` to execute main.js
 
 
 ## Dependencies
