@@ -1,3 +1,5 @@
 node_modules/
 misc/*.pdf
 log/*.log
+yarn-error.log
+yarn.lock
