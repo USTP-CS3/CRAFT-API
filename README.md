@@ -33,10 +33,11 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 
 ## Getting Started
 1. Clone this repository `git clone https://github.com/USTP-CS3/CRAFT-API.git`
-1. Install packages with `pnpm install`
-2. Open `db/database.js` then configure the connection.
-3. Run `pnpm sync` to synchronize models to the database.
-4. Run `pnpm start` to execute main.js
+2. Install packages with `pnpm install`
+3. Run `pnpm serve` to start pocketbase backend.
+4. Open `Admin UI: http://127.0.0.1:8090/_/`
+5. Create an administrator account.
+6. Run `pnpm start` to execute main.js
 
 
 ## Dependencies
@@ -50,34 +51,39 @@ What makes this system even more remarkable is its dual benefit. It helps inter-
 
 - **Pdf2Json**  - used to extract text in pdf files.
 
+- **RimRaf**    - cross-platform directory deletion.
+
 
 ## Directories
 
-- **db**    - database related files
+- **client**            - web content for the client
 
-- **model** - object-relation mapping
+- **server**            - pocketbase sqlite database and backend 
 
-- **util**  - executable scripts
+- **pb_data**           - log and data of the database
 
-- **lib**   - development modules
+- **pb_migrations**     - snapshot of the database design
 
-- **misc**  - miscellaneous files
+- **lib**               - development modules
 
-- **log**   - winston generated logs
+- **misc**              - miscellaneous files
 
+- **log**               - winston generated logs
+
+- **backups**           - data backups of the database
 
 ## Structure
 ```
 [db]
     ├── database.js
-    ├── [model]
-        ├── Faculty.js
-        ├── Room.js
-        ├── Schedule.js
-        ├── Student.js
-        └── Subject.js
-    └── [util]
-        └── setup.js
+    ├── [pb_data]
+        ├── data.db
+        ├── logs.js
+        ├── types.d.ts
+        └── [backups]
+            └── *.backup.zip 
+    └── [pb_migrations]
+        └── database.js
 [lib]
     ├── logger.js
     ├── extractor.js

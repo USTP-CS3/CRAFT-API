@@ -2,3 +2,4 @@ node_modules/
 misc/*.pdf
 log/*.log
 pnpm-lock.yaml
+server/pb_data/*
