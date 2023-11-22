@@ -57,21 +57,21 @@ const synchronize = async function(options) {
 * returns {boolean} connection status of the database
 */
 const connection = async () => {
-    let connection;
     
-    try {
-        connection = new Sequelize('', 
-            credentials.username, 
-            credentials.password, 
-            options
-        );
-        await connection.authenticate();     
-    } 
     
-    catch (error) { connection = false; }
+    const connection = new Sequelize('', 
+        credentials.username, 
+        credentials.password, 
+        options
+    );
+    await connection.authenticate();     
+
+    return connection;
     
-    finally { return connection; }
 };
 
 
-export { session, options, credentials, synchronize, connection };
+
+const Database = { session, options, credentials, synchronize, connection };
+
+export default Database;

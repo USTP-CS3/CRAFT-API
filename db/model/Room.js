@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session } from '../database.js';
+import Database from '../database.js';
 
 const fields = {
   
@@ -38,6 +38,6 @@ const fields = {
     }
 };
 
-const Room = session.define('Room', fields);
+const Room = Database.session.define('Room', fields);
 
 export default Room;

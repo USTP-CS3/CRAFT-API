@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session } from '../database.js';
+import Database from '../database.js';
 
 const fields = {
   
@@ -23,6 +23,6 @@ const fields = {
     }
 };
 
-const Faculty = session.define('Faculty', fields);
+const Faculty = Database.session.define('Faculty', fields);
 
 export default Faculty;

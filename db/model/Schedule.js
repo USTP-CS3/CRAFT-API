@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { session } from '../database.js';
+import Database from '../database.js';
 
 const fields = {
   
@@ -57,6 +57,6 @@ const options = {
     ]
 };
 
-const Schedule = session.define('Schedule', fields, options);
+const Schedule = Database.session.define('Schedule', fields, options);
 
 export default Schedule;
