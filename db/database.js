@@ -6,7 +6,7 @@ import { Sequelize } from 'sequelize';
 const credentials = {
  database: 'DB_CRAFT',
  username: 'root',
- password: 'root',
+ password: 'password',
 };
 
 /**
@@ -60,8 +60,12 @@ const connection = async () => {
     let connection;
     
     try {
-        await session.authenticate();
-        connection = true;
+        connection = new Sequelize('', 
+            credentials.username, 
+            credentials.password, 
+            options
+        );
+        await connection.authenticate();     
     } 
     
     catch (error) { connection = false; }
