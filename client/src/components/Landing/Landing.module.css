@@ -6,7 +6,7 @@
   justify-content: center;
 
   @media (max-width: $mantine-breakpoint-md) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     padding-top: calc(var(--mantine-spacing-xl) * 2);
     padding-bottom: calc(var(--mantine-spacing-xl) * 1);
     align-items: center;
@@ -15,18 +15,22 @@
 
 .content {
   max-width: rem(480px); 
+  float: right;
+  margin-right: calc(var(--mantine-spacing-xl) * 3);
   
   @media (max-width: $mantine-breakpoint-md) {
     padding-left: calc(var(--mantine-spacing-xl) * 1);
     padding-right: calc(var(--mantine-spacing-xl) * 1);
-    padding-top: calc(var(--mantine-spacing-xl) * 2);
-    padding-bottom: calc(var(--mantine-spacing-xl) * 2);
+    padding-top: calc(var(--mantine-spacing-xl) * 1);
+    padding-bottom: calc(var(--mantine-spacing-xl) * 1);
     max-width: 100%;
+    float: none;
+    margin-right: 0;
   }
 
   @media (max-width: $mantine-breakpoint-sm) {
-    padding-left: calc(var(--mantine-spacing-xl) * 1);
-    padding-right: calc(var(--mantine-spacing-xl) * 1);
+    padding-left: calc(var(--mantine-spacing-xl) * 0.5);
+    padding-right: calc(var(--mantine-spacing-xl) * 0.5);
     max-width: 100%;
   }
 }
@@ -52,14 +56,12 @@
 .image {
   width: 376px;
   height: 356px;
-  float: right;
-  margin-right: calc(var(--mantine-spacing-xl) * 3);
+
 
   @media (max-width: $mantine-breakpoint-md) {
+    padding-top: calc(var(--mantine-spacing-xl) * 0);
     width: 100%;
     height: auto;
-    float: none;
-    margin-right: 0;
   }
 }
 

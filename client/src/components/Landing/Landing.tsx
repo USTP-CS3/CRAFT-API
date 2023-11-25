@@ -4,61 +4,17 @@ import { IconCheck } from '@tabler/icons-react';
 import image from './image.svg';
 import classes from './landing.module.css';
 
-import axios from 'axios';
-import { googleLogout } from '@react-oauth/google';
-import { useGoogleOneTapLogin } from '@react-oauth/google';
-import { useGoogleLogin } from '@react-oauth/google';
-
+import { useSessionContext } from '../SessionContext/SessionContext';
 
 export function Landing() {
 
-
-  const handleLoginSuccess = async function (response: any) {
-    try {
-      console.log(response);
-
-      // fetching userinfo can be done on the client or the server
-      const header = { 
-        headers: { Authorization: `Bearer ${response.access_token}`}
-      };
-      const api = 'https://www.googleapis.com/oauth2/v3/userinfo';      
-      const user = await axios.get(api, header);
-
-      console.log(user.data);
-      console.log('Logged in successfully');
-    } 
-    
-    catch (error) {
-      handleLoginFailure();
-    }
-  };
-
-  const handleLoginFailure = function() {
-    console.log('Failed to log in');
-  }
-
-  useGoogleOneTapLogin({
-    auto_select: true,
-    onSuccess: token => handleLoginSuccess(token),
-    onError: () => handleLoginFailure(),
-  }); 
-
-  const login = useGoogleLogin({
-    onSuccess: async token => handleLoginSuccess(token),
-    onError: () => handleLoginFailure(),
-  });
-
-  const logout = function() {
-    googleLogout();
-    console.log('Logged out...');
-  }
+  const { Google } = useSessionContext();
 
 
   return (
       <Container size="md">
        
         <div className={classes.inner}>
-          <Center> <Image src={image} className={classes.image} />  </Center>
           <div className={classes.content}>
             
           
@@ -74,7 +30,7 @@ export function Landing() {
           <List
             mt={30}
             spacing="md"
-            size="md"
+            size="sm"
             icon={
               <ThemeIcon size={20} radius="xl">
                 <IconCheck style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
@@ -82,27 +38,30 @@ export function Landing() {
             }
           >
             <List.Item>
-              <b>Scheduler:</b> Determine whether a specific schedule highlights the most impact.
+              <b>Scheduler:</b> Analyze whether specific schedules align under certain circumstances.
             </List.Item>
 
             <List.Item>
-              <b>Surveyor:</b> Uncover trends and patterns from student contributed responses.
+              <b>Surveyor:</b> Find out about trends and patterns in responses contributed by students.
             </List.Item>
           
           </List>
 
           
           <Group mt={30}>
-            <Button radius="xl" size="md" className={classes.control} onClick={() => login()}>
+            <Button radius="xl" size="md" className={classes.control} onClick={() => Google.login()}>
               Get Started
             </Button>
 
-            <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() => logout()}>
+            <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() => Google.logout()}>
               Documentation
             </Button>
           </Group>
 
         </div>
+
+        <Center> <Image src={image} className={classes.image} />  </Center>
+        
       </div>
     </Container>
   );
