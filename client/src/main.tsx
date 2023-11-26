@@ -1,4 +1,19 @@
+import '@mantine/core/styles.css';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import { MantineProvider } from '@mantine/core';
+import { Router } from './Router';
+import { theme } from './theme';
+import { TokenProvider } from './components/TokenProvider/TokenProvider';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(<App />);
+
+function Main() {
+  return (
+    <TokenProvider>
+      <MantineProvider theme={theme}>
+        <Router />
+      </MantineProvider>
+    </TokenProvider>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')!).render(<Main />);

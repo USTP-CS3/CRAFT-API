@@ -1,15 +1,14 @@
 import { Image, Container, Title, Button, Group, Text, List, ThemeIcon, rem, Center, Box } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
-
 import image from './image.svg';
 import classes from './landing.module.css';
 
-import { useSessionContext } from '../SessionContext/SessionContext';
+import { useContext } from 'react';
+import { TokenContext } from '../TokenProvider/TokenProvider';
 
 export function Landing() {
 
-  const { Google } = useSessionContext();
-
+  const { Pocketbase } = useContext(TokenContext);
 
   return (
       <Container size="md">
@@ -49,11 +48,11 @@ export function Landing() {
 
           
           <Group mt={30}>
-            <Button radius="xl" size="md" className={classes.control} onClick={() => Google.login()}>
+            <Button radius="xl" size="md" className={classes.control} onClick={() => Pocketbase.login()}>
               Get Started
             </Button>
 
-            <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() => Google.logout()}>
+            <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() => Pocketbase.logout()}>
               Documentation
             </Button>
           </Group>
@@ -66,5 +65,3 @@ export function Landing() {
     </Container>
   );
 }
-
-

@@ -1,23 +1,32 @@
-import '@mantine/core/styles.css';
-import { MantineProvider } from '@mantine/core';
-import { Router } from './Router';
-import { theme } from './theme';
+import { useEffect, useState } from 'react';
+import { useSpring, animated } from 'react-spring';
+import { Landing } from './components/Landing/Landing';
 
-import { GoogleOAuthProvider } from '@react-oauth/google';
-const google_client_id = "89255587017-7rk09mkvbs1630in8u0n8jlsip4q5l6k.apps.googleusercontent.com"
+import { useContext } from 'react';
+import { TokenContext } from './components/TokenProvider/TokenProvider';
+import { ColorSchemeToggle } from './components/ColorSchemeToggle/ColorSchemeToggle';
 
+export function App() {
 
-import { SessionProvider } from './components/SessionContext/SessionContext';
+  // const { Token } = useContext(TokenContext);
 
+  const [showLanding, setShowLanding] = useState(false);
 
-export default function App() {
+  const fadeInAnimation = useSpring({
+    opacity: showLanding ? 1 : 0,
+    from: { opacity: 0 },
+    config: { tension: 200, friction: 25 },
+  });
+
+  useEffect(() => {
+    // Set showLanding to true after component mount
+    setShowLanding(true);
+
+  }, []);
+
   return (
-    <GoogleOAuthProvider clientId={google_client_id}>
-      <SessionProvider>
-        <MantineProvider theme={theme}>
-          <Router />
-        </MantineProvider>
-      </SessionProvider>
-    </GoogleOAuthProvider>
+      <>
+      <animated.div style={fadeInAnimation}><Landing /></animated.div>
+      </>
   );
 }
