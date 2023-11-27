@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "sync": "node db/util/setup.js",
+    "sync": "node server/db/util/setup.js",
     "start": "node main.js"
   },
   "dependencies": {
