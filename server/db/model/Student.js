@@ -20,6 +20,11 @@ const fields = {
         allowNull: false
     },
 
+    auth_name: { 
+        type: DataTypes.STRING(50),
+        allowNull: false
+    },
+
     middle_initial: {
         type: DataTypes.CHAR(1),
         allowNull: true
@@ -58,7 +63,8 @@ const fields = {
 
     email: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
 
     contact_no: {
