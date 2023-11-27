@@ -1,4 +1,5 @@
 node_modules/
-misc/*.pdf
-log/*.log
+server/misc/*.pdf
+server/log/*.log
+client/
 pnpm-lock.yaml
