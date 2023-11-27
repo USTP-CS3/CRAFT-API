@@ -4,7 +4,7 @@ import image from './image.svg';
 import classes from './landing.module.css';
 
 import { useContext } from 'react';
-import { TokenContext } from '../TokenProvider/TokenProvider';
+import { TokenContext } from '../../provider/TokenProvider/TokenProvider';
 
 export function Landing() {
 

@@ -4,7 +4,7 @@ migrate((db) => {
     {
       "id": "3o63ltv3h5etksb",
       "created": "2023-11-22 17:10:56.895Z",
-      "updated": "2023-11-27 02:17:55.380Z",
+      "updated": "2023-11-22 18:37:51.256Z",
       "name": "Student",
       "type": "base",
       "system": false,
@@ -149,6 +149,19 @@ migrate((db) => {
         },
         {
           "system": false,
+          "id": "vm15hx7i",
+          "name": "email",
+          "type": "email",
+          "required": true,
+          "presentable": false,
+          "unique": false,
+          "options": {
+            "exceptDomains": [],
+            "onlyDomains": []
+          }
+        },
+        {
+          "system": false,
           "id": "xztltfuz",
           "name": "contact_no",
           "type": "text",
@@ -159,22 +172,6 @@ migrate((db) => {
             "min": 10,
             "max": 10,
             "pattern": ""
-          }
-        },
-        {
-          "system": false,
-          "id": "3neekpxg",
-          "name": "account_id",
-          "type": "relation",
-          "required": true,
-          "presentable": false,
-          "unique": false,
-          "options": {
-            "collectionId": "_pb_users_auth_",
-            "cascadeDelete": false,
-            "minSelect": null,
-            "maxSelect": 1,
-            "displayFields": null
           }
         },
         {
@@ -195,20 +192,19 @@ migrate((db) => {
         }
       ],
       "indexes": [
-        "CREATE UNIQUE INDEX `idx_wJODTcn` ON `Student` (\n  `first_name`,\n  `last_name`\n)",
-        "CREATE UNIQUE INDEX `idx_gsWZPYI` ON `Student` (`account_id`)"
+        "CREATE UNIQUE INDEX `idx_wJODTcn` ON `Student` (\n  `first_name`,\n  `last_name`\n)"
       ],
-      "listRule": "account_id = @request.auth.id",
-      "viewRule": "account_id = @request.auth.id",
-      "createRule": "account_id = @request.auth.id",
-      "updateRule": "account_id = @request.auth.id",
+      "listRule": null,
+      "viewRule": null,
+      "createRule": null,
+      "updateRule": null,
       "deleteRule": null,
       "options": {}
     },
     {
       "id": "n21gomr1b3f5a00",
       "created": "2023-11-22 17:33:40.926Z",
-      "updated": "2023-11-26 16:44:10.376Z",
+      "updated": "2023-11-22 18:38:03.735Z",
       "name": "Subject",
       "type": "base",
       "system": false,
@@ -303,9 +299,9 @@ migrate((db) => {
       "indexes": [
         "CREATE UNIQUE INDEX `idx_QnyDtWa` ON `Subject` (`course_code`)"
       ],
-      "listRule": "@request.auth.id != \"\"",
-      "viewRule": "@request.auth.id != \"\"",
-      "createRule": "@request.auth.id != \"\"",
+      "listRule": null,
+      "viewRule": null,
+      "createRule": null,
       "updateRule": null,
       "deleteRule": null,
       "options": {}
@@ -313,7 +309,7 @@ migrate((db) => {
     {
       "id": "dzor3ve42gzla70",
       "created": "2023-11-22 17:34:26.367Z",
-      "updated": "2023-11-26 16:46:34.973Z",
+      "updated": "2023-11-22 18:37:10.836Z",
       "name": "Faculty",
       "type": "base",
       "system": false,
@@ -352,9 +348,9 @@ migrate((db) => {
       "indexes": [
         "CREATE UNIQUE INDEX `idx_hfW1tgv` ON `Faculty` (`name`)"
       ],
-      "listRule": "@request.auth.id != \"\"",
-      "viewRule": "@request.auth.id != \"\"",
-      "createRule": "@request.auth.id != \"\"",
+      "listRule": null,
+      "viewRule": null,
+      "createRule": null,
       "updateRule": null,
       "deleteRule": null,
       "options": {}
@@ -362,7 +358,7 @@ migrate((db) => {
     {
       "id": "p48aayug763hyu8",
       "created": "2023-11-22 17:36:52.968Z",
-      "updated": "2023-11-26 16:46:13.922Z",
+      "updated": "2023-11-22 18:37:16.565Z",
       "name": "Room",
       "type": "base",
       "system": false,
@@ -401,9 +397,9 @@ migrate((db) => {
       "indexes": [
         "CREATE UNIQUE INDEX `idx_JklLTp3` ON `Room` (`description`)"
       ],
-      "listRule": "@request.auth.id != \"\"",
-      "viewRule": "@request.auth.id != \"\"",
-      "createRule": "@request.auth.id != \"\"",
+      "listRule": null,
+      "viewRule": null,
+      "createRule": null,
       "updateRule": null,
       "deleteRule": null,
       "options": {}
@@ -411,7 +407,7 @@ migrate((db) => {
     {
       "id": "uq3c77feje7thhu",
       "created": "2023-11-22 17:46:37.235Z",
-      "updated": "2023-11-26 16:47:09.479Z",
+      "updated": "2023-11-22 18:37:41.602Z",
       "name": "Schedule",
       "type": "base",
       "system": false,
@@ -576,17 +572,17 @@ migrate((db) => {
       "indexes": [
         "CREATE UNIQUE INDEX `idx_zJMDep8` ON `Schedule` (\n  `section`,\n  `day`,\n  `semester`,\n  `year`\n)"
       ],
-      "listRule": "@request.auth.id != \"\"",
-      "viewRule": "@request.auth.id != \"\"",
-      "createRule": "@request.auth.id != \"\"",
-      "updateRule": "@request.auth.id != \"\"",
+      "listRule": null,
+      "viewRule": null,
+      "createRule": null,
+      "updateRule": null,
       "deleteRule": null,
       "options": {}
     },
     {
       "id": "r1lngnbsx36goo2",
       "created": "2023-11-22 17:49:21.261Z",
-      "updated": "2023-11-27 02:18:13.659Z",
+      "updated": "2023-11-22 17:49:21.261Z",
       "name": "StudentSchedule",
       "type": "base",
       "system": false,
@@ -627,90 +623,12 @@ migrate((db) => {
       "indexes": [
         "CREATE UNIQUE INDEX `idx_WVBI0VV` ON `StudentSchedule` (\n  `student_id`,\n  `schedule_id`\n)"
       ],
-      "listRule": "@request.auth.id != ''",
-      "viewRule": "@request.auth.id != ''",
-      "createRule": "student_id.account_id = @request.auth.id",
+      "listRule": null,
+      "viewRule": null,
+      "createRule": null,
       "updateRule": null,
       "deleteRule": null,
       "options": {}
-    },
-    {
-      "id": "_pb_users_auth_",
-      "created": "2023-11-26 13:57:12.321Z",
-      "updated": "2023-11-27 10:31:38.051Z",
-      "name": "Account",
-      "type": "auth",
-      "system": false,
-      "schema": [
-        {
-          "system": false,
-          "id": "users_name",
-          "name": "meta_name",
-          "type": "text",
-          "required": false,
-          "presentable": false,
-          "unique": false,
-          "options": {
-            "min": null,
-            "max": 25,
-            "pattern": ""
-          }
-        },
-        {
-          "system": false,
-          "id": "users_avatar",
-          "name": "avatar",
-          "type": "file",
-          "required": false,
-          "presentable": false,
-          "unique": false,
-          "options": {
-            "maxSelect": 1,
-            "maxSize": 5242880,
-            "mimeTypes": [
-              "image/jpeg",
-              "image/png",
-              "image/svg+xml",
-              "image/gif",
-              "image/webp"
-            ],
-            "thumbs": null,
-            "protected": false
-          }
-        },
-        {
-          "system": false,
-          "id": "kvtugqmk",
-          "name": "student_id",
-          "type": "relation",
-          "required": false,
-          "presentable": false,
-          "unique": false,
-          "options": {
-            "collectionId": "3o63ltv3h5etksb",
-            "cascadeDelete": false,
-            "minSelect": null,
-            "maxSelect": 1,
-            "displayFields": null
-          }
-        }
-      ],
-      "indexes": [],
-      "listRule": null,
-      "viewRule": null,
-      "createRule": "",
-      "updateRule": "",
-      "deleteRule": null,
-      "options": {
-        "allowEmailAuth": true,
-        "allowOAuth2Auth": true,
-        "allowUsernameAuth": true,
-        "exceptEmailDomains": null,
-        "manageRule": "id = @request.auth.id",
-        "minPasswordLength": 8,
-        "onlyEmailDomains": null,
-        "requireEmail": false
-      }
     }
   ];
 

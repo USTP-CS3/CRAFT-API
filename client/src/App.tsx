@@ -3,7 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import { Landing } from './components/Landing/Landing';
 
 import { useContext } from 'react';
-import { TokenContext } from './components/TokenProvider/TokenProvider';
+import { TokenContext } from './provider/TokenProvider/TokenProvider';
 import { ColorSchemeToggle } from './components/ColorSchemeToggle/ColorSchemeToggle';
 
 export function App() {

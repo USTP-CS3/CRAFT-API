@@ -1,0 +1,21 @@
+{
+  "files.exclude": {
+    "client\\vitest.setup.mjs": true,
+    "client\\vite.config.mjs": true,
+    "client\\tsconfig.json": true,
+    "client\\postcss.config.cjs": true,
+    "client\\pnpm-lock.yaml": true,
+    "client\\.stylelintrc.json": true,
+    "client\\.stylelintignore": true,
+    "client\\.prettierrc.cjs": true,
+    "client\\.eslintrc.cjs": true,
+    "client\\.eslintignore": true,
+    "client\\node_modules": true,
+    "client\\.vscode": true,
+    ".vscode": true,
+    ".git": true,
+    "pnpm-lock.yaml": true,
+    "client\\src\\vite-env.d.ts": true,
+    "client\\src\\theme.ts": true
+  }
+}

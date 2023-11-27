@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { MantineProvider } from '@mantine/core';
 import { Router } from './Router';
 import { theme } from './theme';
-import { TokenProvider } from './components/TokenProvider/TokenProvider';
+import { TokenProvider } from './provider/TokenProvider/TokenProvider';
 
 
 function Main() {
   return (
-    <TokenProvider>
       <MantineProvider theme={theme}>
-        <Router />
+        <TokenProvider>
+          <Router />
+        </TokenProvider>
       </MantineProvider>
-    </TokenProvider>
   );
 }
 
