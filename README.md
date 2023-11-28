@@ -107,7 +107,6 @@ README.md
 
 ![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/180e87a8-88aa-4270-a7a1-81c4019b32bf)
 
-<<<<<<< HEAD
 **Class::Scheduler - generates schedule frequency analysis report**
 
 ![image](https://github.com/NathanJargon/CRAFT-API/blob/scheduler/img.png)
@@ -115,9 +114,6 @@ README.md
 **Class::Profiler  - generates analysis report of student responses**
 
 **Class::Reporter  - wrapper for the client-side**
-=======
-**Reporter, Scheduler, & Profiler - generates analysis report for the client**
->>>>>>> origin/main
 
 ![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/96b282d6-9ee4-426b-81f4-9037a6cdaae8)
 
