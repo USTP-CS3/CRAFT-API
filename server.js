@@ -15,18 +15,38 @@ import { jwtDecode } from "jwt-decode";
 
 const app = express();
 
-// log all requests
+// --------------- everything here is public ---------------------
+// log all requests to a file (middleware)
+// -- morgan library --
 
 
-// verify token signature
-app.use((req, res, next) => {
-  console.log(req);
-  next();
-});
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+// --------------- everything here is private --------------------
+// verify token validity (middleware)
+// -- google oauth2 library --
+
+/api/student/
+// get self student data
+
+
+/api/student/setup
+// post student certificate of registration
+// middleware to extract student data from cor
+// middleware to check if student data exists
+// update if student data already exists
+
+
+/api/student/delete
+// delete self student data (non cascading)
+
+
+/api/schedule
+// get all schedules
+
+
+/api/subject
+// get all subjects
+
 
 
 const PORT = 3000;
@@ -35,6 +55,14 @@ app.listen(PORT, () => {
 });
 
 
+// app.use((req, res, next) => {
+//   console.log(req);
+//   next();
+// });
+
+// app.get('/', (req, res) => {
+//   res.send('Hello World!');
+// });
 
 
  // try {
