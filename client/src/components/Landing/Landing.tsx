@@ -8,7 +8,7 @@ import { TokenContext } from '../../provider/TokenProvider/TokenProvider';
 
 export function Landing() {
 
-  const { Pocketbase } = useContext(TokenContext);
+  const { Google } = useContext(TokenContext);
 
   return (
       <Container size="md">
@@ -48,11 +48,11 @@ export function Landing() {
 
           
           <Group mt={30}>
-            <Button radius="xl" size="md" className={classes.control} onClick={() => Pocketbase.login()}>
+            <Button radius="xl" size="md" className={classes.control} onClick={() => Google.login()}>
               Get Started
             </Button>
 
-            <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() => Pocketbase.logout()}>
+            <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() => Google.logout()}>
               Documentation
             </Button>
           </Group>

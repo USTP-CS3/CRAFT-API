@@ -2,14 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import { Landing } from './components/Landing/Landing';
 
-import { useContext } from 'react';
-import { TokenContext } from './provider/TokenProvider/TokenProvider';
-import { ColorSchemeToggle } from './components/ColorSchemeToggle/ColorSchemeToggle';
-
 export function App() {
-
-  // const { Token } = useContext(TokenContext);
-
   const [showLanding, setShowLanding] = useState(false);
 
   const fadeInAnimation = useSpring({
@@ -21,7 +14,6 @@ export function App() {
   useEffect(() => {
     // Set showLanding to true after component mount
     setShowLanding(true);
-
   }, []);
 
   return (

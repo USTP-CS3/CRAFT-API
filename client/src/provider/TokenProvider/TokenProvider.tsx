@@ -1,97 +1,76 @@
+/**
+ * 
+ * context and providers are used for global state management 
+ * (eg. access a variable from here to any component in the hierarchy)  
+ * 
+ */
 
 import { createContext, useEffect, useState } from 'react';
-import PocketBase from 'pocketbase';
+import { GooglePopup } from './GooglePopup';
 
-const Server = new PocketBase('http://127.0.0.1:8090');
+// google console user_account client id
+const CLIENT_ID = '89255587017-7rk09mkvbs1630in8u0n8jlsip4q5l6k.apps.googleusercontent.com';
 
+
+// context allows for the state to be accessed anywhere in the application
 const TokenContext = createContext<any>(null);
 
-const TokenProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+// provider is a wrapper for the entire application
+const TokenProvider = ({ children }: { children: React.ReactNode }): 
+JSX.Element => {
 
-  // TODO: if replace pocketbase and using the google api
-  // useEffect(() => {
-    // TODO: if replace pocketbase and using the google api
-    // window.google.accounts.id.initialize( 
-    //   { // Load and initialize the user_account from the Google Cloud Console
-    //     client_id: '89255587017-7rk09mkvbs1630in8u0n8jlsip4q5l6k.apps.googleusercontent.com', 
-    //     callback: handleCredentialResponse
-    //   } 
-    // );
-    // window.google.accounts.id.prompt();
-  // }, []);
-  
-  // const Google = {
-  //   login: () => GooglePopup(),
-  //   logout: () => localStorage.clear(),
-  // };
-
-  const [Token, setToken] = useState<any>(() => {
-    const storedToken = localStorage.getItem('pocketbase_auth');
-    return (storedToken) 
-      ? JSON.parse(storedToken)
-      : null;
-  });
-
-  const [AccountModel, setAccountModel] = useState<any>(() => {
-    return (Token) 
-      ? Server.authStore.model
-      : null;
-  });
+  // set the state of the account being used in the application
+  const [Account, setAccount] = useState<any>(null);
 
   useEffect(() => {
-    if (Server.authStore.isValid) {
-      Server.collection('Account').authRefresh();
-      console.log(Server.authStore.model);
-    }
-    else {
-      Pocketbase.logout();
+    // load and initialize the user_account from the Google Cloud Console
+    window.google.accounts.id.initialize({
+      auto_select: true,
+      client_id: CLIENT_ID, 
+      callback: (response: any) => {
+        const token = response.credential;
+        localStorage.setItem('token', token);
+        
+        console.log(token);
+
+        // -- TODO --
+        // check if account has student data
+        // if not, redirect to setup page
+
+        // extract the data from the token 
+        // and set it as the account state
+      },
+    });
+
+    // check if token is stored in local storage
+    const storedToken = localStorage.getItem('token');
+    if (storedToken !== null) {
+
+      // -- TODO --
+      // make a get request to the backend to verify the token
+
+      // if token is invalid
+      //    window.google.accounts.id.prompt();
+      
+      // otherwise,
+      //    check if account has student data
+      //    if not, redirect to setup page 
+      //    set the account 
     }
   }, []);
-
-  const Pocketbase = {
-
-    authWithProvider: async () => {
-      const accountCollection = Server.collection('Account');
-      const authData = await accountCollection
-        .authWithOAuth2({ provider: 'google' });
-      const meta = authData.meta;
-      
-      if (meta?.isNew) {
-        const response = await fetch(meta.avatarUrl);
-        const file = await response.blob();
-        const metaData = {
-          meta_name: meta.name,
-          avatar: file,
-        }
-        await accountCollection.update(authData.record.id, metaData);
-      }
-      return authData;
-    },
-
-    
-    login: async () => {
-      try {
-        const authData = await Pocketbase.authWithProvider();
-        setToken(authData);
-        
-        const modelData = Server.authStore.model!;
-        setAccountModel(modelData);
-      } 
-      catch (err) { console.error(err); Pocketbase.logout(); }
-    },
-
-
+  
+  const Google = {
+    login: () => GooglePopup(),
     logout: () => {
-      Server.authStore.clear();
-      localStorage.clear();
-      setToken(null);
-      setAccountModel(null);
-    }
+      window.google.accounts.id.disableAutoSelect();
+      localStorage.clear()
+      setAccount(null);
+    },
   };
 
 
   return (
-    <TokenContext.Provider value={{ Pocketbase, AccountModel, Server }}>
+    <TokenContext.Provider value={{ Account, Google }}>
       {children}
     </TokenContext.Provider>
   );
