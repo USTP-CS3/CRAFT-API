@@ -1,5 +1,5 @@
 node_modules/
-misc/*.pdf
-log/*.log
+server/misc/*.pdf
+server/log/*.log
 pnpm-lock.yaml
 server/pb_data/*
