@@ -1,2 +1,5 @@
 node_modules/
-misc/*.pdf
+server/misc/*.pdf
+server/log/*.log
+client/
+pnpm-lock.yaml
