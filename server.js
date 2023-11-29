@@ -1,51 +1,44 @@
-// import { synchronize } from '.server/db/database.js';
-
-// import Student  from './db/model/Student.js';
-// import Subject  from './db/model/Subject.js';
-// import Schedule from './db/model/Schedule.js';
-// import Room     from './db/model/Room.js';
-// import Faculty  from './db/model/Faculty.js';
-
-// import Extractor from "./lib/extractor.js";
-// import Logger    from "./lib/logger.js";
+/**
+ * handles all the requests and responses
+ * of the server 
+ */
 
 import express from 'express';
-import { OAuth2Client } from 'google-auth-library';
-import { jwtDecode } from "jwt-decode";
+import { logger } from './server/routes/middleware/logger.js';
+import { verify, auth } from './server/routes/middleware/google.js';
 
 const app = express();
 
-// --------------- everything here is public ---------------------
-// log all requests to a file (middleware)
-// -- morgan library --
+// verify middleware initializes the auth middleware and 
+// updates req.craft.log and logs all reqeust to database
+app.use(verify, logger);
 
 
 
-// --------------- everything here is private --------------------
-// verify token validity (middleware)
-// -- google oauth2 library --
+// /api/student/
+// // get self student data
 
-/api/student/
-// get self student data
+// app.get('/api/student', (req, res) => {
+//   res.send('Hello World!');
+// });
 
-
-/api/student/setup
-// post student certificate of registration
-// middleware to extract student data from cor
-// middleware to check if student data exists
-// update if student data already exists
-
-
-/api/student/delete
-// delete self student data (non cascading)
+// /api/student/setup
+// // post student certificate of registration
+// // middleware to extract student data from cor
+// // middleware to check if student data exists
+// // update if student data already exists
 
 
-/api/schedule
-// get all schedules
+// /api/student/delete
+// // delete self student data (non cascading)
 
 
-/api/subject
-// get all subjects
+// /api/schedule
+// // get all schedules
+
+
+// /api/subject
+// // get all subjects
 
 
 
