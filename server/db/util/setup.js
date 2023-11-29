@@ -8,6 +8,7 @@
 import Database from '../database.js';
 import Logger   from '../../lib/logger.js';
 
+import Request  from '../model/Request.js';
 import Faculty  from '../model/Faculty.js';
 import Room     from '../model/Room.js';
 import Student  from '../model/Student.js';
@@ -23,6 +24,8 @@ import Subject  from '../model/Subject.js';
         // Define the relationship between models
         Student  .belongsToMany (Schedule, {through: 'StudentSchedule'});
         Schedule .belongsToMany (Student,  {through: 'StudentSchedule'});
+        Student  .hasMany       (Request);
+        Request  .belongsTo     (Student);
         Subject  .hasMany       (Schedule);
         Schedule .belongsTo     (Subject);
         Faculty  .hasMany       (Schedule);
@@ -35,7 +38,6 @@ import Subject  from '../model/Subject.js';
         Logger.error(`${error.name}: ${error.message}`);
         return;
     }
-
 
 
     try {
