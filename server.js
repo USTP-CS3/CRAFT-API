@@ -10,11 +10,11 @@
  *
  */
 
-import cors from "cors";
-import express from "express";
-import { Logger } from "./server/routes/middleware/logger.js";
-import { Google } from "./server/routes/middleware/google.js";
-import { StudentController } from "./server/routes/controller/student.js";
+import cors from 'cors';
+import express from 'express';
+import { Logger } from './server/routes/middleware/logger.js';
+import { Google } from './server/routes/middleware/google.js';
+import { StudentController } from './server/routes/controller/student.js';
 
 const app = express();
 
@@ -35,7 +35,7 @@ app.use(cors());
 app.use(Google.verify, Logger.listen);
 
 // get self student data
-app.get("/api/student", Google.auth, StudentController.get_data);
+app.get('/api/student', Google.auth, StudentController.get_data);
 
 const PORT = 5000;
 app.listen(PORT, () => {
