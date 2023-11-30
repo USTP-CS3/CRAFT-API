@@ -11,6 +11,12 @@
     "client\\.eslintignore": true,
     "client\\src\\vite-env.d.ts": true,
     "client\\src\\theme.ts": true,
-    "pnpm-lock.yaml": true
-  }
+    "pnpm-lock.yaml": true,
+    "client\\postcss.config.cjs": true,
+    "client\\node_modules": true,
+    ".git": true,
+    ".vscode": true
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
