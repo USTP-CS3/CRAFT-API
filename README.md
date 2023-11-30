@@ -1,6 +1,13 @@
 # CRAFT-API
 Student Scheduler &amp; Profiling System
 
+## Development Environment
+1. Use `Visual Studio Code`
+2. Install the following extensions:
+   - prettier: code formatter (set indent to 3)
+   - helium: nice icons for folders
+   - rest client: debug requests
+   - mysql: database viewer
 
 ## Getting Started: Client React.js
 1. Clone this repository `git clone https://github.com/USTP-CS3/CRAFT-API.git`
