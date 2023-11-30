@@ -1,3 +1,12 @@
+/**
+ * 
+ * Custom made to extract data from the Certificate of Registration (COR) 
+ * of the University of Science and Technology of Southern Philippines. 
+ * 
+ * It is used as a middleware in the server.js file.
+ * 
+ */
+
 import PDFParser from "pdf2json";
 
 
