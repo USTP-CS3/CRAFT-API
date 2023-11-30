@@ -1,32 +1,16 @@
 {
   "files.exclude": {
-    "vitest.setup.mjs": true,
-    "vite.config.mjs": true,
-    "tsconfig.json": true,
-    "postcss.config.cjs": true,
-    "pnpm-lock.yaml": true,
-    ".stylelintrc.json": true,
-    ".stylelintignore": true,
-    ".prettierrc.cjs": true,
-    ".eslintrc.cjs": true,
-    ".eslintignore": true,
-    "src\\vite-env.d.ts": true,
-    "src\\theme.ts": true,
-    ".vscode": true,
-    "node_modules": true,
     "client\\vitest.setup.mjs": true,
     "client\\vite.config.mjs": true,
     "client\\tsconfig.json": true,
-    "client\\postcss.config.cjs": true,
     "client\\pnpm-lock.yaml": true,
     "client\\.stylelintrc.json": true,
     "client\\.stylelintignore": true,
     "client\\.prettierrc.cjs": true,
     "client\\.eslintrc.cjs": true,
     "client\\.eslintignore": true,
-    "client\\node_modules": true,
-    ".git": true,
     "client\\src\\vite-env.d.ts": true,
-    "client\\src\\theme.ts": true
+    "client\\src\\theme.ts": true,
+    "pnpm-lock.yaml": true
   }
 }

@@ -1,6 +1,6 @@
 import { Image, Container, Title, Button, Group, Text, List, ThemeIcon, rem, Center, Box } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
-import image from './image.svg';
+import image from './craft.svg';
 import classes from './landing.module.css';
 
 import { useContext } from 'react';
@@ -22,14 +22,14 @@ export function Landing() {
           </Title>
           
           <Text c="dimmed" mt="md">
-            Made to simplify student life and community development in the University of Science and Technology of Southern Philippines.
+            Made to simplify student life and community development in the University of Science and Technology of Southern Philippines Cagayan De Oro Campus.
           </Text>
 
 
           <List
             mt={30}
-            spacing="md"
-            size="sm"
+            spacing="lg"
+            size="md"
             icon={
               <ThemeIcon size={20} radius="xl">
                 <IconCheck style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
@@ -37,11 +37,11 @@ export function Landing() {
             }
           >
             <List.Item>
-              <b>Scheduler:</b> Analyze whether specific schedules align under certain circumstances.
+            Discover trends and patterns that have been shared by the college's campus community.
             </List.Item>
 
             <List.Item>
-              <b>Surveyor:</b> Find out about trends and patterns in responses contributed by students.
+            Identify opportunities with the help of a well-organized report designed for students and faculty.
             </List.Item>
           
           </List>

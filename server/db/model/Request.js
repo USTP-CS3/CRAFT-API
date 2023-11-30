@@ -15,7 +15,7 @@ const fields = {
         allowNull: false,
     },
 
-    verified: {
+    authenticated: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
     },
@@ -37,11 +37,6 @@ const fields = {
 
     status: {
         type: DataTypes.CHAR(3),
-        allowNull: false,
-    },
-
-    content_length: {
-        type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
     },
 

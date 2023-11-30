@@ -1,32 +1,52 @@
 /**
- * handles all the requests and responses
- * of the server 
+ * 
+ * handles all the requests and responses of the server 
+ * 
+ * req.craft object that contains the following:
+ * - authenticated: boolean
+ * - message: string
+ * - account: object (contains the id token info)
+ * - package: object (contains the route response)
+ *  
  */
 
+import cors from 'cors';
 import express from 'express';
-import { logger } from './server/routes/middleware/logger.js';
-import { verify, auth } from './server/routes/middleware/google.js';
+import { Logger } from './server/routes/middleware/logger.js';
+import { Google } from './server/routes/middleware/google.js';
+import { StudentController } from './server/routes/controller/student.js';
 
 const app = express();
 
-// verify middleware initializes the auth middleware and 
-// updates req.craft.log and logs all reqeust to database
-app.use(verify, logger);
+
+/**
+ * This is a proxy option for the dev server.
+ * It will proxy /api from the client to the routes.
+ * Handles Cross-Origin Resource Sharing (CORS) errors.
+ */
+app.use(cors());
 
 
+/**
+ * 
+ * verify initializes the auth middleware and it creates the req.craft
+ * listen reads the output of verify and logs all requests to database
+ * auth is used by a specific route if it needs to be authenticated
+ * 
+ */
+app.use(Google.verify, Logger.listen);
 
-// /api/student/
-// // get self student data
+// get self student data
+app.get('/api/student', Google.auth, StudentController.get_data);
 
-// app.get('/api/student', (req, res) => {
-//   res.send('Hello World!');
-// });
 
 // /api/student/setup
-// // post student certificate of registration
-// // middleware to extract student data from cor
-// // middleware to check if student data exists
-// // update if student data already exists
+// post student certificate of registration
+// middleware to extract student data from cor
+// middleware to check if student data exists
+// update if student data already exists
+// app.post('/api/student/setup') {}
+
 
 
 // /api/student/delete
@@ -42,7 +62,7 @@ app.use(verify, logger);
 
 
 
-const PORT = 3000;
+const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

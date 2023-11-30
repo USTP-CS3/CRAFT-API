@@ -2,7 +2,7 @@
   "name": "mantine-vite-template",
   "private": true,
   "version": "0.0.0",
-  "proxy": "http://localhost:8090",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@mantine/core": "7.2.2",
+    "@mantine/dropzone": "^7.2.2",
     "@mantine/hooks": "7.2.2",
     "@react-oauth/google": "^0.12.1",
     "@tabler/icons-react": "^2.42.0",
