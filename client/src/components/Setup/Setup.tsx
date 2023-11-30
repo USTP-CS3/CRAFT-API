@@ -16,12 +16,10 @@ import {
 	rem,
 } from '@mantine/core';
 
-import { Upload } from './Upload';
+import { DropzoneButton } from '../Dropzone/Dropzone';
 import { IconUserCheck, IconMailOpened, IconShieldCheck } from '@tabler/icons-react';
 
 import { IconPhoto, IconArrowLeft, IconUser } from '@tabler/icons-react';
-
-import { Agreement } from './Agreement';
 
 function Setup() {
 	const mobileWidthPx = 815;
@@ -87,17 +85,16 @@ function Setup() {
 
 			<Container>
 				{active === 1 && (
-					<Container>
-						<Upload />
-						<Flex mt={20} align={'center'}>
+					<Container size='xs'>
+						<DropzoneButton />
+						<Flex mt={50} align={'center'}>
 							<Checkbox />
 							<Space w={10} />
-							<Text fz='md' c='dimmed'>
-								I agree to the{' '}
-								<Anchor href='https://mantine.dev/' target='_blank' underline='hover'>
-									{' '}
-									Terms and Conditions
-								</Anchor>
+							<Text fz='xs' c='dimmed'>
+								By checking the box, you agree to submit your own Certificate of
+								Registration to convey official enrollment, and adhere to university
+								policies and regulations. Your data is shared with university departments
+								and organizations, but it remains anonymous to other users.
 							</Text>
 						</Flex>
 					</Container>
