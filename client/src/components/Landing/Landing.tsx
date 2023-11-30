@@ -9,11 +9,13 @@ import {
 	ThemeIcon,
 	rem,
 	Center,
-	Box,
+	Divider,
 } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
 import image from './craft.svg';
 import classes from './landing.module.css';
+
+import { Contributor } from '../Contributor/Contributor';
 
 import { useContext } from 'react';
 import { TokenContext } from '../../provider/TokenProvider/TokenProvider';
@@ -35,7 +37,7 @@ export function Landing() {
 					<List
 						mt={30}
 						spacing='lg'
-						size='md'
+						size='sm'
 						icon={
 							<ThemeIcon size={20} radius='xl'>
 								<IconCheck
@@ -47,14 +49,12 @@ export function Landing() {
 								/>
 							</ThemeIcon>
 						}>
-						<List.Item c='dimmed'>
-							Discover trends and patterns that have been shared by the college's campus
-							community.
+						<List.Item>
+							Discover trends and patterns contributed by the college community.
 						</List.Item>
 
-						<List.Item c='dimmed'>
-							Identify opportunities with the help of a well-organized report designed for
-							students and faculty.
+						<List.Item>
+							Find potential opportunities designed for students and faculty.
 						</List.Item>
 					</List>
 
@@ -83,6 +83,7 @@ export function Landing() {
 					<Image src={image} className={classes.image} />{' '}
 				</Center>
 			</div>
+			<Contributor />
 		</Container>
 	);
 }
