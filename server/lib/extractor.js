@@ -7,6 +7,7 @@
  *
  */
 
+import Pdfparser from 'pdf2json';
 import PDFParser from 'pdf2json';
 
 // Extractor Class-------------------------------------------------------------------------------------------------
@@ -22,7 +23,7 @@ export default Extractor;
 /**
  * Extracts student data and schedule data from the Certificate of Registration (COR).
  *
- * @param   {string} pdf - The file path of the Certificate of Registration in PDF format.
+ * @param   {string | Buffer} pdf - The file path of the Certificate of Registration in PDF format.
  * @returns {Promise<{ studentData: JSON, subjectData: JSON }>} A promise that resolves with student and subject data.
  * @throws  {PdfParserError} Thrown if there is an error during PDF parsing.
  * @throws  {InvalidFormatError} Thrown if the COR file is not in the correct format.
@@ -32,17 +33,25 @@ async function getCorInfo(pdf) {
 	/**
 	 * Retrieves information from a Certificate of Registration (COR) PDF file.
 	 *
-	 * @param   {string} filePath - The file path of the Certificate of Registration in PDF format.
+	 * @param   {string | Buffer} pdf - The file path of the Certificate of Registration in PDF format.
 	 * @returns {Promise<{ studentData: JSON, subjectData: JSON }>} A promise that resolves with student and subject data.
 	 * @throws  {PdfParserError} Thrown if there is an error during PDF parsing.
 	 * @throws  {InvalidFormatError} Thrown if the COR file is not in the correct format.
 	 * @throws  {Error} Thrown for any other unexpected errors.
 	 * @private
 	 */
-	const _getCorInfo = (filePath) => {
+	const _getCorInfo = (pdf) => {
 		return new Promise((resolve, reject) => {
 			const pdfParser = new PDFParser();
-			pdfParser.loadPDF(filePath);
+
+			// check if its a string then its a path
+			if (typeof pdf == 'string') {
+				pdfParser.loadPDF(pdf);
+			}
+			// check if not, then its a buffer
+			else {
+				pdfParser.parseBuffer(pdf);
+			}
 
 			pdfParser.on('pdfParser_dataError', (dataError) => {
 				reject({

@@ -19,6 +19,7 @@ const TokenContext = createContext<any>(null);
 const TokenProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
 	// set the state of the account being used in the application
 	const [Account, setAccount] = useState<any>(null);
+	const [Token, setToken] = useState<any>(null);
 
 	const checkExistAccount = (token: string) => {
 		// set the token in the header for axios requests
@@ -36,11 +37,13 @@ const TokenProvider = ({ children }: { children: React.ReactNode }): JSX.Element
 			.catch((err) => {
 				// if token is valid but account has no student data
 				if (err.response.data.authenticated == true) {
+					setToken(token);
 					setAccount('setup');
 				}
 				// if token is invalid or expired
 				else if (localStorage.getItem('token')!) {
 					window.google.accounts.id.prompt();
+					setToken(token);
 					setAccount('none');
 				}
 				// if token is not in local storage
@@ -62,6 +65,7 @@ const TokenProvider = ({ children }: { children: React.ReactNode }): JSX.Element
 				const token = response.credential;
 				localStorage.setItem('token', token);
 				checkExistAccount(token);
+				setToken(token);
 			},
 		});
 	}, []);
@@ -72,10 +76,15 @@ const TokenProvider = ({ children }: { children: React.ReactNode }): JSX.Element
 			window.google.accounts.id.disableAutoSelect();
 			localStorage.clear();
 			setAccount('none');
+			setToken(null);
 		},
 	};
 
-	return <TokenContext.Provider value={{ Account, Google }}>{children}</TokenContext.Provider>;
+	return (
+		<TokenContext.Provider value={{ Account, Google, Token, setAccount }}>
+			{children}
+		</TokenContext.Provider>
+	);
 };
 
 export { TokenProvider, TokenContext };
