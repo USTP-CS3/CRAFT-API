@@ -16,7 +16,9 @@ function Setup() {
 	const { Google } = useContext(TokenContext);
 
 	const [isMobile, setIsMobile] = useState(window.innerWidth < mobileWidthPx);
-	const [active, setActive] = useState(1);
+	const [active, setActive] = useState(0);
+	const [loading, setLoading] = useState(true);
+
 	const nextStep = () => setActive((current) => (current < 4 ? current + 1 : current));
 	const prevStep = () => setActive((current) => (current > 1 ? current - 1 : current));
 
@@ -27,6 +29,16 @@ function Setup() {
 	const handleclick = () => {
 		console.log('clicked');
 	};
+
+	useEffect(() => {
+		setTimeout(() => {
+			setTimeout(() => {
+				nextStep();
+			}, 300);
+			setLoading(false);
+		}, 600);
+	}, []);
+
 	const stepper = (
 		<>
 			<div style={isMobile ? {} : { paddingTop: 20, paddingBottom: 20 }}>
@@ -50,13 +62,13 @@ function Setup() {
 					ml={isMobile ? 0 : 30}
 					mb={isMobile ? 0 : 30}
 					radius='md'
-					onStepClick={setActive}
 					orientation={isMobile ? 'horizontal' : 'vertical'}>
 					<Stepper.Step
 						style={{ height: rem(120) }}
 						label={isMobile ? null : 'Step 1: Verify Email'}
 						description={isMobile ? null : 'Continue with Google'}
 						icon={<IconMailOpened style={{ width: rem(18), height: rem(18) }} />}
+						loading={loading}
 					/>
 
 					<Stepper.Step
