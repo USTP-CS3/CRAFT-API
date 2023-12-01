@@ -1,51 +1,56 @@
-import Student from './server/db/model/Student.js';
-import Subject from './server/db/model/Subject.js';
-import Schedule from './server/db/model/Schedule.js';
+/**
+ *
+ * handles all the requests and responses of the server
+ *
+ * req.craft object that contains the following:
+ * - authenticated: boolean
+ * - message: string
+ * - account: object (contains the id token info)
+ * - package: object (contains the route response)
+ *
+ */
+
+import cors from 'cors';
 import express from 'express';
-import { OAuth2Client } from 'google-auth-library';
-import { jwtDecode } from 'jwt-decode';
-import database from './server/db/database.js';
-import setup from './util/corUploader.js';
-import extractor from './server/lib/extractor.js';
-import formatData from './util/formatter.js';
+import { Logger } from './server/routes/middleware/logger.js';
+import { Google } from './server/routes/middleware/google.js';
+import { StudentController } from './server/routes/controller/student.js';
 
 const app = express();
-const router = express.Router();
 
-// API routes
-app.use('/api', router); // Mount API routes at '/api' path
-app.use((err, req, res, next) => {
- console.log(err);
- res.status(500).send('Something went wrong!');
-});
+/**
+ * This is a proxy option for the dev server.
+ * It will proxy /api from the client to the routes.
+ * Handles Cross-Origin Resource Sharing (CORS) errors.
+ */
+app.use(cors());
 
-// --------------- everything here is public ---------------------
-// log all requests to a file (middleware)
-// -- morgan library --
+/**
+ *
+ * verify initializes the auth middleware and it creates the req.craft
+ * listen reads the output of verify and logs all requests to database
+ * auth is used by a specific route if it needs to be authenticated
+ *
+ */
+app.use(Google.verify, Logger.listen);
 
-// --------------- everything here is private --------------------
-// verify token validity (middleware)
-// -- google oauth2 library --
-// router.use(verifyToken);  --- this is the verifyToken middleware
-
-const PORT = 3000;
-app.listen(PORT, async () => {
- console.log(`Server is running on http://localhost:${PORT}`);
- await database.connection();
-});
-
-// /api/student/
 // get self student data
-// router.get('/student', async (req, res) => {
-//  try {
-//   // Access user info from req.user
-//   const userId = req.user.sub; // or any other user-related info
+app.get('/api/student', Google.auth, StudentController.get_data);
 
-//   const student = await Student.findOne({ where: { id: userId } });
+const PORT = 5000;
+app.listen(PORT, () => {
+	console.log(`Server is running on http://localhost:${PORT}`);
+});
 
-//   if (!student) {
-//    return res.status(404).send('Student data not found');
-//   }
+// ============================================================================================================
+// Template for creating a new route
+
+// /api/student/setup
+// post student certificate of registration
+// middleware to extract student data from cor
+// middleware to check if student data exists
+// update if student data already exists
+// app.post('/api/student/setup') {}
 
 //   res.json(student);
 //  } catch (error) {
@@ -55,65 +60,67 @@ app.listen(PORT, async () => {
 
 // /api/student/setup
 // post student certificate of registration logic
-
-router.post('/setup', setup.array('files'), async (req, res) => {
- const file = req.files;
- console.log(file); // Log uploaded files information
-
- // middleware to extract student data from cor
- const studentData = await extractor.getCorInfo(file[0].path);
-
- if (!studentData) {
-  return res.status(404).send('Student data not found');
- }
-
- //  format data to be inserted to database
- const formattedData = formatData(studentData);
-
- formattedData.studentData.email = 'sample@gmail.com'; //req.user.email  ;
-
- await Student.upsert(formattedData.studentData);
-
- res.status(200).json(req.files);
-});
-
+//
 // /api/student/delete
-// delete self student data (non cascading)
-router.delete('/student/delete', async (req, res) => {
- await Student.destroy({
-  where: {
-   id: req.user.id, // the id of the student to be deleted or EMAIL  req.user.email
-  },
- })
-  .then(() => {
-   console.log('User deleted successfully.');
-  })
-  .catch((error) => {
-   console.error('Error occurred:', error);
-  });
-});
+// // delete self student data (non cascading)
 
-// /api/schedule
-// get all schedules
-router.get('/schedule', async (req, res) => {
- try {
-  const schedules = await Schedule.findAll();
-  res.json(schedules);
- } catch (error) {
-  res.status(500).send('Internal Server Error');
- }
-});
+// router.post('/setup', setup.array('files'), async (req, res) => {
+//  const file = req.files;
+//  console.log(file); // Log uploaded files information
+
+// // middleware to extract student data from cor
+// const studentData = await extractor.getCorInfo(file[0].path);
+
+// // /api/schedule
+// // // get all schedules
+
+//  if (!studentData) {
+//   return res.status(404).send('Student data not found');
+//  }
+
+//  //  format data to be inserted to database
+//  const formattedData = formatData(studentData);
 
 // /api/subject
-// get all subjects
-router.get('/subject', async (req, res) => {
- try {
-  const subjects = await Subject.findAll();
-  res.json(subjects);
- } catch (error) {
-  res.status(500).send('Internal Server Error');
- }
-});
+// // get all subjects
+
+// // /api/student/delete
+// // delete self student data (non cascading)
+// app.delete('/student/delete', async (req, res) => {
+//  await Student.destroy({
+//   where: {
+//    id: req.user.id, // the id of the student to be deleted or EMAIL  req.user.email
+//   },
+//  })
+//   .then(() => {
+//    console.log('User deleted successfully.');
+//   })
+//   .catch((error) => {
+//    console.error('Error occurred:', error);
+//   });
+// });
+
+// // /api/schedule
+// // get all schedules
+// app.get('/schedule', async (req, res) => {
+//  try {
+//   const schedules = await Schedule.findAll();
+//   res.json(schedules);
+//  } catch (error) {
+//   res.status(500).send('Internal Server Error');
+//  }
+// });
+
+// // /api/subject
+// // get all subjects
+// app.get('/subject', async (req, res) => {
+//  try {
+//   const subjects = await Subject.findAll();
+//   res.json(subjects);
+//  } catch (error) {
+//   res.status(500).send('Internal Server Error');
+//  }
+// });
 
 // app.use((req, res, next) => {
 //   console.log(req);

@@ -19,6 +19,7 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.3",
     "pdf2json": "^3.0.4",
+    "sequelize": "^6.35.1",
     "winston": "^3.11.0"
   },
   "devDependencies": {

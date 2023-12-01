@@ -9,33 +9,43 @@ const fields = {
 		autoIncrement: true,
 	},
 
-	section: {
+	remote_address: {
 		type: DataTypes.STRING(25),
 		allowNull: false,
 	},
 
-	start_time: {
-		type: DataTypes.TIME,
+	authenticated: {
+		type: DataTypes.BOOLEAN,
 		allowNull: false,
 	},
 
-	end_time: {
-		type: DataTypes.TIME,
+	message: {
+		type: DataTypes.STRING(50),
 		allowNull: false,
 	},
 
-	day: {
-		type: DataTypes.ENUM('M', 'T', 'W', 'H', 'F', 'S'),
+	method: {
+		type: DataTypes.ENUM('GET', 'POST', 'PUT', 'DELETE'),
 		allowNull: false,
 	},
 
-	semester: {
-		type: DataTypes.ENUM('1', '2'),
+	url: {
+		type: DataTypes.STRING(255),
 		allowNull: false,
 	},
 
-	year: {
-		type: DataTypes.CHAR(4),
+	status: {
+		type: DataTypes.CHAR(3),
+		allowNull: false,
+	},
+
+	response_time: {
+		type: DataTypes.FLOAT.UNSIGNED,
+		allowNull: false,
+	},
+
+	total_time: {
+		type: DataTypes.FLOAT.UNSIGNED,
 		allowNull: false,
 	},
 
@@ -46,16 +56,6 @@ const fields = {
 	},
 };
 
-const options = {
-	// composite unique constraint
-	indexes: [
-		{
-			fields: ['section', 'day', 'semester', 'year'],
-			unique: true,
-		},
-	],
-};
+const Request = Database.session.define('Request', fields);
 
-const Schedule = Database.session.define('Schedule', fields, options);
-
-export default Schedule;
+export default Request;
