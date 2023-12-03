@@ -85,6 +85,7 @@ export function Upload({ onComplete }: { onComplete: (res: any) => void }) {
 			<div className={classes.wrapper}>
 				<Dropzone
 					loading={isLoading}
+					loaderProps={{ type: 'dots' }}
 					openRef={openRef}
 					onDrop={handleDrop}
 					className={classes.dropzone}
