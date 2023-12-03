@@ -5,7 +5,7 @@
  * - isValid: boolean
  * - message: string
  * - account: object (contains the client id token info)
- * - data: object (contains the student data from the database)
+ * - package: object (contains the student data from the database)
  *
  */
 
@@ -19,11 +19,8 @@ const listen = morgan(async function (tokens, req, res) {
 			const student = await Student.findOne({ where: { email: req.craft.account.email } });
 			let StudentId = null;
 
-			if (student != null) {
-				StudentId = student.getDataValue('id');
-			} else if (req.craft.message == null) {
-				req.craft.message = 'Student Not Found';
-			}
+			// Associate the request to the student or faculty id.
+			if (student != null) StudentId = student.getDataValue('id');
 
 			const log = {
 				response_time: tokens['response-time'](req, res),

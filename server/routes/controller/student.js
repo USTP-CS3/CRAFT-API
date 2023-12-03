@@ -1,5 +1,4 @@
 import Student from '../../db/model/Student.js';
-
 import Extractor from '../../lib/extractor.js';
 
 /**
@@ -19,6 +18,7 @@ const get_data = (req, res) => {
 
 		// check if student data exists
 		if (student != undefined) {
+			req.craft.message = 'Student Exists';
 			res.json(req.craft);
 			return;
 		}

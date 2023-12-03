@@ -46,7 +46,7 @@ function verify(req, res, next) {
 
 			req.craft = {
 				authenticated: true,
-				message: 'GOOD',
+				message: 'Authenticated',
 				account: account,
 			};
 			next();
@@ -85,11 +85,12 @@ function verify(req, res, next) {
 function auth(req, res, next) {
 	// note: req.craft are processed by middleware
 	if (req.craft.authenticated) {
+		// send verify() status
 		// continue to the next middleware
 		next();
 		return;
 	} else {
-		// send not authorized status
+		// send verify() status
 		res.status(401).json(req.craft);
 		return;
 	}
