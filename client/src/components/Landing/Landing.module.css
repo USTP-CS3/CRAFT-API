@@ -1,14 +1,14 @@
 .inner {
 	display: flex;
 	justify-content: space-between;
-	padding-top: calc(var(--mantine-spacing-xl) * 5);
+	/* padding-top: calc(var(--mantine-spacing-xl) * 5); */
 	/* padding-bottom: calc(var(--mantine-spacing-xl) * 5); */
 	justify-content: center;
 
 	@media (max-width: $mantine-breakpoint-md) {
 		flex-direction: column-reverse;
 		padding-top: calc(var(--mantine-spacing-xl) * 2);
-		/* padding-bottom: calc(var(--mantine-spacing-xl) * 1); */
+		padding-bottom: calc(var(--mantine-spacing-xl) * 1);
 		align-items: center;
 	}
 }

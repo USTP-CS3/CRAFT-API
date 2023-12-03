@@ -10,6 +10,7 @@ import {
 	rem,
 	Center,
 	Divider,
+	Flex,
 } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
 import image from './craft.svg';
@@ -25,64 +26,70 @@ export function Landing() {
 
 	return (
 		<Container size='md'>
-			<div className={classes.inner}>
-				<div className={classes.content}>
-					<Title className={classes.title}>Collaborative Resource And Feedback Tool</Title>
+			<Flex align='center' justify='space-around' direction='column'>
+				<Flex align='center' style={{ minHeight: '90vh', width: '100%' }}>
+					<div className={classes.inner}>
+						<div className={classes.content}>
+							<Title className={classes.title}>
+								Collaborative Resource And Feedback Tool
+							</Title>
 
-					<Text mt='md'>
-						Made to simplify student life and community development in the University of
-						Science and Technology of Southern Philippines Cagayan De Oro Campus.
-					</Text>
+							<Text mt='md'>
+								Made to simplify student life and community development in the University of
+								Science and Technology of Southern Philippines Cagayan De Oro Campus.
+							</Text>
 
-					<List
-						mt={30}
-						spacing='lg'
-						size='sm'
-						icon={
-							<ThemeIcon size={20} radius='xl'>
-								<IconCheck
-									style={{
-										width: rem(12),
-										height: rem(12),
-									}}
-									stroke={1.5}
-								/>
-							</ThemeIcon>
-						}>
-						<List.Item>
-							Discover trends and patterns contributed by the college community.
-						</List.Item>
+							<List
+								mt={30}
+								spacing='lg'
+								size='sm'
+								icon={
+									<ThemeIcon size={20} radius='xl'>
+										<IconCheck
+											style={{
+												width: rem(12),
+												height: rem(12),
+											}}
+											stroke={1.5}
+										/>
+									</ThemeIcon>
+								}>
+								<List.Item>
+									Discover trends and patterns contributed by the college community.
+								</List.Item>
 
-						<List.Item>
-							Find potential opportunities designed for students and faculty.
-						</List.Item>
-					</List>
+								<List.Item>
+									Find potential opportunities designed for students and faculty.
+								</List.Item>
+							</List>
 
-					<Group mt={30}>
-						<Button
-							radius='xl'
-							size='md'
-							className={classes.control}
-							onClick={() => Google.login()}>
-							Get Started
-						</Button>
+							<Group mt={30}>
+								<Button
+									radius='xl'
+									size='md'
+									className={classes.control}
+									onClick={() => Google.login()}>
+									Get Started
+								</Button>
 
-						<Button
-							variant='default'
-							radius='xl'
-							size='md'
-							className={classes.control}
-							onClick={() => Google.logout()}>
-							Documentation
-						</Button>
-					</Group>
-				</div>
+								<Button
+									variant='default'
+									radius='xl'
+									size='md'
+									className={classes.control}
+									onClick={() => Google.logout()}>
+									Documentation
+								</Button>
+							</Group>
+						</div>
 
-				<Center>
-					{' '}
-					<Image src={image} className={classes.image} />{' '}
-				</Center>
-			</div>
+						<Center>
+							{' '}
+							<Image src={image} className={classes.image} />{' '}
+						</Center>
+					</div>
+				</Flex>
+			</Flex>
 			<Contributor />
 		</Container>
 	);

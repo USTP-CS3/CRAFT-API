@@ -1,14 +1,14 @@
 .wrapper {
 	position: relative;
 	margin-bottom: rem(30px);
-	border: 2px dashed grey;
-	border-radius: rem(10px);
 }
 
 .dropzone {
 	border-width: rem(1px);
 	padding-top: rem(30px);
 	padding-bottom: rem(50px);
+	border: 2px dashed grey;
+	border-radius: rem(10px);
 }
 
 .icon {

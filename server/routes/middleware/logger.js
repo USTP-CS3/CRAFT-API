@@ -14,15 +14,14 @@ import Student from '../../db/model/Student.js';
 import morgan from 'morgan';
 
 const listen = morgan(async function (tokens, req, res) {
-	if (req.craft.account !== undefined) {
+	if (req.craft.account != null) {
 		try {
 			const student = await Student.findOne({ where: { email: req.craft.account.email } });
 			let StudentId = null;
 
-			if (student !== undefined) {
+			if (student != null) {
 				StudentId = student.getDataValue('id');
-				req.craft.response = student;
-			} else {
+			} else if (req.craft.message == null) {
 				req.craft.message = 'Student Not Found';
 			}
 
@@ -38,7 +37,6 @@ const listen = morgan(async function (tokens, req, res) {
 				StudentId: StudentId,
 			};
 
-			console.log(log);
 			await Request.create(log);
 		} catch (error) {
 			console.error('Error processing request:', error);

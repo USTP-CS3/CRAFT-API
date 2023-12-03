@@ -11,11 +11,17 @@
  */
 
 import cors from 'cors';
+import multer from 'multer';
 import express from 'express';
 import { Logger } from './server/routes/middleware/logger.js';
 import { Google } from './server/routes/middleware/google.js';
 import { StudentController } from './server/routes/controller/student.js';
 
+// Multer configuration
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// express app
 const app = express();
 
 /**
@@ -36,6 +42,9 @@ app.use(Google.verify, Logger.listen);
 
 // get self student data
 app.get('/api/student', Google.auth, StudentController.get_data);
+
+// download student certificate of registration
+app.post('/api/student/setup', Google.auth, upload.single('corpdf'), StudentController.post_setup);
 
 const PORT = 5000;
 app.listen(PORT, () => {
