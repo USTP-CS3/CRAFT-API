@@ -3,12 +3,12 @@ import { Typing } from '../Typing/Typing';
 import { Upload } from '../Upload/Upload';
 import { TokenContext } from '@/provider/TokenProvider/TokenProvider';
 import { ResizeProvider } from '../../provider/ResizeProvider/ResizeProvider';
-import { IconUserCheck, IconMailOpened, IconShieldCheck, IconArrowLeft } from '@tabler/icons-react';
+import { IconUserCheck, IconMailOpened, IconShieldCheck, IconLogout2 } from '@tabler/icons-react';
 import { Stepper, Button, Title, Container, Flex, Text, Center, rem } from '@mantine/core';
 import { TypeAnimation } from 'react-type-animation';
 
 function Setup() {
-	const mobileWidthPx = 755;
+	const mobileWidthPx = 910;
 
 	const { Google, setAccount } = useContext(TokenContext);
 	const [response, setResponse] = useState(null);
@@ -47,51 +47,61 @@ function Setup() {
 
 	const stepper = (
 		<>
-			<div style={isMobile ? {} : { paddingTop: 20, paddingBottom: 20 }}>
-				<Container size='sm'>
-					<Button
-						fullWidth={isMobile ? true : false}
-						variant='light'
-						size='sm'
-						mb={isMobile ? 0 : 20}
-						ml={isMobile ? 0 : 44}
-						leftSection={<IconArrowLeft size={14} />}
-						onClick={() => Google.logout()}>
-						Sign out
-					</Button>
+			<div
+				style={
+					isMobile
+						? { paddingLeft: 12, paddingRight: 12 }
+						: { paddingTop: 20, paddingBottom: 20 }
+				}>
+				{isMobile == false && (
+					<Container size='xs'>
+						<Button
+							variant='light'
+							size='sm'
+							radius='lg'
+							mb={30}
+							ml={60}
+							leftSection={<IconLogout2 size={14} />}
+							onClick={() => Google.logout()}>
+							Log out
+						</Button>
+					</Container>
+				)}
+				<Container size='xs'>
+					<Stepper
+						active={active}
+						pl={isMobile ? 0 : 30}
+						pr={isMobile ? 0 : 30}
+						mt={isMobile ? -25 : 0}
+						ml={isMobile ? 0 : 30}
+						mb={isMobile ? 0 : 30}
+						size={isMobile ? 'sm' : 'md'}
+						radius='md'
+						orientation={isMobile ? 'horizontal' : 'vertical'}>
+						<Stepper.Step
+							style={{ height: rem(120) }}
+							label={isMobile ? null : 'Step 1: Verify Email'}
+							description={isMobile ? null : 'Continue with Google'}
+							icon={<IconMailOpened style={{ width: rem(18), height: rem(18) }} />}
+							loading={active == 0 && loading}
+						/>
+
+						<Stepper.Step
+							style={{ height: rem(120) }}
+							label={isMobile ? null : 'Step 2: Create Profile'}
+							description={isMobile ? null : 'Check Enrollment Status'}
+							icon={<IconShieldCheck style={{ width: rem(20), height: rem(20) }} />}
+							loading={active == 1 && loading}
+						/>
+
+						<Stepper.Step
+							label={isMobile ? null : 'Step 3: Complete Setup'}
+							description={isMobile ? null : 'Evaluate Information'}
+							icon={<IconUserCheck style={{ width: rem(20), height: rem(20) }} />}
+							loading={active == 2 && loading}
+						/>
+					</Stepper>
 				</Container>
-				<Stepper
-					active={active}
-					pl={isMobile ? 15 : 30}
-					pr={isMobile ? 15 : 30}
-					mt={isMobile ? -25 : 0}
-					ml={isMobile ? 0 : 30}
-					mb={isMobile ? 0 : 30}
-					radius='md'
-					orientation={isMobile ? 'horizontal' : 'vertical'}>
-					<Stepper.Step
-						style={{ height: rem(120) }}
-						label={isMobile ? null : 'Step 1: Verify Email'}
-						description={isMobile ? null : 'Continue with Google'}
-						icon={<IconMailOpened style={{ width: rem(18), height: rem(18) }} />}
-						loading={active == 0 && loading}
-					/>
-
-					<Stepper.Step
-						style={{ height: rem(120) }}
-						label={isMobile ? null : 'Step 2: Create Profile'}
-						description={isMobile ? null : 'Check Enrollment Status'}
-						icon={<IconShieldCheck style={{ width: rem(20), height: rem(20) }} />}
-						loading={active == 1 && loading}
-					/>
-
-					<Stepper.Step
-						label={isMobile ? null : 'Step 3: Complete Setup'}
-						description={isMobile ? null : 'Evaluate Information'}
-						icon={<IconUserCheck style={{ width: rem(20), height: rem(20) }} />}
-						loading={active == 2 && loading}
-					/>
-				</Stepper>
 			</div>
 
 			<div>
@@ -111,6 +121,17 @@ function Setup() {
 					<Container size='xs' mt={-10}>
 						{isMobile == true && (
 							<div style={{ marginBottom: 25 }}>
+								<Button
+									// fullWidth={isMobile ? true : false}
+									variant='light'
+									size='sm'
+									radius='lg'
+									mb={isMobile ? 20 : 20}
+									ml={isMobile ? 0 : 44}
+									leftSection={<IconLogout2 size={14} />}
+									onClick={() => Google.logout()}>
+									Log out
+								</Button>
 								<Title order={3}>Step 2: Create Profile</Title>
 								<Text fz='md' c='dimmed'>
 									Check Enrollment Status
@@ -157,11 +178,11 @@ function Setup() {
 							</div>
 						)}
 
-						<div style={isMobile ? { paddingTop: 100 } : { minWidth: 200, marginRight: 150 }}>
+						<div style={isMobile ? { paddingTop: 100 } : { minWidth: 250, marginRight: 150 }}>
 							<Flex direction='column' justify='space-around' align='center'>
-								<Title>Done!</Title>
+								<Title mb={20}>Done!</Title>
 								<TypeAnimation
-									sequence={['Redirecting to dashboard...', 500]}
+									sequence={['Redirecting you to the dashboard...', 500]}
 									style={{ color: '#ccc' }}
 									speed={50}
 								/>
