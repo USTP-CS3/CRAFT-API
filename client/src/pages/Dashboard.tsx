@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { TokenContext } from '@/provider/TokenProvider/TokenProvider';
+import { TokenContext } from '../provider/TokenProvider';
 
 const Dashboard = () => {
 	const { Google } = useContext(TokenContext);

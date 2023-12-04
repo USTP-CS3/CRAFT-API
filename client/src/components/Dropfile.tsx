@@ -13,10 +13,10 @@ import {
 } from '@mantine/core';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { IconCloudUpload, IconX, IconCheck, IconDownload } from '@tabler/icons-react';
-import { TokenContext } from '../../provider/TokenProvider/TokenProvider';
-import classes from './DropzoneButton.module.css';
+import { TokenContext } from '../provider/TokenProvider';
+import classes from '../styles/Dropzone.module.css';
 
-export function Upload({ onComplete }: { onComplete: (res: any) => void }) {
+export function Dropfile({ onComplete }: { onComplete: (res: any) => void }) {
 	const theme = useMantineTheme();
 	const openRef = useRef<() => void>(null);
 
@@ -172,7 +172,10 @@ export function Upload({ onComplete }: { onComplete: (res: any) => void }) {
 			<Flex mt={50} align={'center'}>
 				<Checkbox
 					checked={isAgree}
-					onChange={(click) => setAgree(click.currentTarget.checked)}
+					onClick={(click) => {
+						setLoading(true);
+						setAgree(click.currentTarget.checked);
+					}}
 					disabled={!isSuccess}
 				/>
 				<Space w={10} />

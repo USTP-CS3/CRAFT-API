@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { MantineProvider } from '@mantine/core';
 import { Router } from './Router';
 import { theme } from './theme';
-import { TokenProvider } from './provider/TokenProvider/TokenProvider';
+import { TokenProvider } from './provider/TokenProvider';
 
 function Main() {
 	return (
