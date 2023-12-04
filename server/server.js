@@ -49,7 +49,7 @@ App.get(
 );
 
 // extract data from uploaded student cor pdf
-// and temporarily store it to temp_cor_extract
+// and temporarily store it to temp_cor_extract object
 // if unsupported, save to temp folder for future debugging
 App.post(
 	'/api/student/post_extract_corpdf',
@@ -59,8 +59,8 @@ App.post(
 	StudentController.post_extract_corpdf
 );
 
-// saves cor to misc
-// and inserts temp_cor_extract data to the database
+// saves temp_cor_extract file to misc
+// and inserts data to the database
 App.post(
 	'/api/student/post_import_corpdf',
 	Google.authenticate,
