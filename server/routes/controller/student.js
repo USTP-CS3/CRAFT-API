@@ -32,8 +32,25 @@ function post_extract_corpdf(req, res) {
 
 		Extractor.getCorInfo(corpdf)
 			.then(({ studentData, subjectData }) => {
+				// if document is not a Certificate of Registration, throw an error
+				if (studentData.document_title != 'CERTIFICATEOFREGISTRATION') {
+					throw new Error('Extraction Failed');
+				}
+
+				// if college is not CITC or campus is not USTP CDO,
+				// response with unsupported message
+				else if (
+					studentData.campus != 'USTP CDO CAMPUS' ||
+					studentData.college != 'COLLEGE OF INFORMATION TECHNOLOGY AND COMPUTING'
+				) {
+					req.craft.message = 'Unsupported College';
+					req.craft.package = { studentData, subjectData };
+					// TODO: save the file to misc/extract_unsupported folder
+					res.status(200).json(req.craft);
+				}
+
 				// if college is CITC, respond with a success message
-				if (studentData.college == 'COLLEGE OF INFORMATION TECHNOLOGY AND COMPUTING') {
+				else if (studentData.college == 'COLLEGE OF INFORMATION TECHNOLOGY AND COMPUTING') {
 					req.craft.message = 'Extraction Success';
 					req.craft.package = { studentData, subjectData };
 
@@ -46,19 +63,11 @@ function post_extract_corpdf(req, res) {
 					res.status(200).json(req.craft);
 					return;
 				}
-				// if college is not CITC, response with unsupported message
-				else {
-					req.craft.message = 'Unsupported College';
-					req.craft.package = { studentData, subjectData };
-
-					// TODO: save the file to temp folder for future debugging
-
-					res.status(200).json(req.craft);
-				}
 			})
 			.catch((error) => {
 				req.craft.message = 'Extraction Failed';
 				req.craft.package = null;
+				// TODO: save the file to misc/extract_failed folder
 				res.status(500).json(req.craft);
 				return;
 			});
@@ -73,6 +82,7 @@ function post_extract_corpdf(req, res) {
 function post_import_corpdf(req, res) {
 	// TODO: get the file and data from temp_cor_extract based on req.craft.account.email
 	// save the file to misc and import the data to the database
+	// if error, save the file to misc/failed_import folder
 }
 
 const StudentController = { get_self_data, post_extract_corpdf, post_import_corpdf };
