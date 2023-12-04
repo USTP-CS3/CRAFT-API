@@ -4,71 +4,76 @@ import Extractor from '../../lib/extractor.js';
 /**
  * Returns the account's student data
  */
-const get_data = (req, res) => {
-	// get student data from database
-	const query = {
-		where: { email: req.craft.account.email },
-		raw: true,
-		nest: true,
-	};
-
-	Student.findOne(query).then((student) => {
-		// package: route specific output
-		req.craft.package = student;
-
-		// check if student data exists
-		if (student != undefined) {
-			req.craft.message = 'Student Exists';
-			res.json(req.craft);
-			return;
-		}
-
-		// send error if not exist
-		else {
-			req.craft.message = 'Student Not Found';
-			res.status(404).json(req.craft);
-			return;
-		}
-	});
-};
+function get_self_data(req, res) {
+	// package comes from has_self_data middleware
+	res.json(req.craft);
+	return;
+}
 
 /**
  * Multer middleware for uploaded file should be defined before this is used
+ *
+ * temporarily store the extracted data from the pdf
+ * until the user agreed on the next request
  */
-const post_setup = (req, res) => {
+
+// import to database after the user agreed on the next request
+// temporary storage for the extracted data
+// the email of the user is the key of temp_cor_extract object
+// this contains the the file and data of the corpdf
+var temp_cor_extract = {};
+
+// TODO: save it to disk or perform other operations
+
+function post_extract_corpdf(req, res) {
 	try {
 		// Access the uploaded file from req.file
 		const corpdf = req.file.buffer;
 
-		// Process the file as needed
-		// For example, you can save it to disk or perform other operations
-
 		Extractor.getCorInfo(corpdf)
 			.then(({ studentData, subjectData }) => {
+				// if college is CITC, respond with a success message
 				if (studentData.college == 'COLLEGE OF INFORMATION TECHNOLOGY AND COMPUTING') {
-					// Respond with a success message
 					req.craft.message = 'Extraction Success';
 					req.craft.package = { studentData, subjectData };
+
+					// temporarily store the file and data with email as key
+					temp_cor_extract[req.craft.account.email] = {
+						file: corpdf,
+						data: req.craft.package,
+					};
+
 					res.status(200).json(req.craft);
 					return;
-				} else {
-					// Respond with a unsupported message
+				}
+				// if college is not CITC, response with unsupported message
+				else {
 					req.craft.message = 'Unsupported College';
 					req.craft.package = { studentData, subjectData };
+
+					// TODO: save the file to temp folder for future debugging
+
 					res.status(200).json(req.craft);
 				}
 			})
 			.catch((error) => {
 				req.craft.message = 'Extraction Failed';
+				req.craft.package = null;
 				res.status(500).json(req.craft);
 				return;
 			});
 	} catch (error) {
 		req.craft.message = 'Upload Failed';
+		req.craft.package = null;
 		res.status(500).json(req.craft);
 		return;
 	}
-};
+}
 
-const StudentController = { get_data, post_setup };
+function post_import_corpdf(req, res) {
+	// TODO: get the file and data from temp_cor_extract based on req.craft.account.email
+	// save the file to misc and import the data to the database
+}
+
+const StudentController = { get_self_data, post_extract_corpdf, post_import_corpdf };
 export { StudentController };

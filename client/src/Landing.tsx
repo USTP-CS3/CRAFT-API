@@ -16,7 +16,7 @@ import image from './craft.svg';
 import classes from './styles/Landing.module.css';
 import { useState, useContext } from 'react';
 import { IconCheck } from '@tabler/icons-react';
-import { TokenContext } from './provider/TokenProvider';
+import { AccountContext } from './provider/AccountProvider';
 import { ResizeProvider } from './provider/ResizeProvider';
 
 function TextArea() {
@@ -57,7 +57,7 @@ function ListArea() {
 }
 
 function ButtonArea() {
-	const { Google } = useContext(TokenContext);
+	const { Google } = useContext(AccountContext);
 
 	return (
 		<Group mt={30}>

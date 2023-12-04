@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 import { useContext, useState } from 'react';
 import { IconCheck } from '@tabler/icons-react';
-import { TokenContext } from '../provider/TokenProvider';
+import { AccountContext } from '../provider/AccountProvider';
 import { ResizeProvider } from '../provider/ResizeProvider';
 
 import image from '../assets/craft.svg';
@@ -49,7 +49,7 @@ function Contributor() {
 }
 
 export function Landing() {
-	const { Google } = useContext(TokenContext);
+	const { Google } = useContext(AccountContext);
 
 	return (
 		<Container size='md'>

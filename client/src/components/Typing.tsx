@@ -24,7 +24,7 @@ const Typing: React.FC<TypingProps> = ({ textData, onAnimationComplete }) => {
 			});
 
 			if (container) {
-				container.scrollTop = container.scrollHeight; // Scroll to the bottom
+				(container as HTMLElement).scrollTop = (container as HTMLElement).scrollHeight; // Scroll to the bottom
 			}
 
 			if (index === lines.length) {

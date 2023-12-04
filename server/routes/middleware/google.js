@@ -82,7 +82,7 @@ function verify(req, res, next) {
  * This function must be called after the verify middleware.
  * Otherwise, the req.craft will not be updated.
  */
-function auth(req, res, next) {
+function authenticate(req, res, next) {
 	// note: req.craft are processed by middleware
 	if (req.craft.authenticated) {
 		// send verify() status
@@ -96,5 +96,5 @@ function auth(req, res, next) {
 	}
 }
 
-const Google = { verify, auth };
+const Google = { verify, authenticate };
 export { Google };

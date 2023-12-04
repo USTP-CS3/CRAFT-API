@@ -1,21 +1,25 @@
 import { useContext, useState, useEffect } from 'react';
 import { Typing } from '../components/Typing';
 import { Dropfile } from '../components/Dropfile';
-import { TokenContext } from '../provider/TokenProvider';
+import { AccountContext } from '../provider/AccountProvider';
 import { ResizeProvider } from '../provider/ResizeProvider';
 import { IconUserCheck, IconMailOpened, IconShieldCheck, IconLogout2 } from '@tabler/icons-react';
 import { Stepper, Button, Title, Container, Flex, Text, Center, rem } from '@mantine/core';
 import { TypeAnimation } from 'react-type-animation';
+import axios from 'axios';
 
 function Setup() {
+	const { Google, initUser } = useContext(AccountContext);
+
 	const mobileWidthPx = 910;
-
-	const { Google, setAccount } = useContext(TokenContext);
-
 	const [isMobile, setIsMobile] = useState(window.innerWidth < mobileWidthPx);
+
 	const [activeStep, setActiveStep] = useState(0);
 	const [loadingStep, setLoadingStep] = useState(false);
 	const [responsePackage, setResponsePackage] = useState(null);
+
+	const [isDataImportComplete, setDataImportComplete] = useState<String>('');
+	const [isCodingAnimationComplete, setCodingAnimationComplete] = useState(false);
 
 	const nextStep = () => setActiveStep((current) => (current < 4 ? current + 1 : current));
 	const prevStep = () => setActiveStep((current) => (current > 1 ? current - 1 : current));
@@ -33,11 +37,57 @@ function Setup() {
 	const handleResize = (width: number) =>
 		width < mobileWidthPx ? setIsMobile(true) : setIsMobile(false);
 
+	useEffect(() => loadNext(), []);
+
 	useEffect(() => {
-		if (activeStep == 3) setTimeout(() => setAccount('helloworld'), 4500);
+		switch (activeStep) {
+			case 2:
+				// during the dropfile component it requested post_extract_corpdf to the server
+				// the request checked if corpdf was valid and didnt exist in the database
+				// then it caches the data in the server, so that when the user agrees
+				// the request post_import_corpdf will just insert the cache to the database
+				// this is to prevent the user from waiting for the server to process the data
+				axios
+					.post('http://localhost:5000/api/student/post_import_corpdf')
+					.then((res: any) => {
+						// check if response message is unsupported, then set to import complettion to null
+						res.data.message == 'Unsupported College'
+							? setDataImportComplete('unsupported')
+							: setDataImportComplete('complete');
+					})
+					.catch((error) => {
+						setDataImportComplete('failed');
+						console.log('corpdf failed to import to database', error);
+					});
+				break;
+
+			case 3:
+				setTimeout(() => initUser(), 4500);
+				break;
+		}
 	}, [activeStep]);
 
-	useEffect(() => loadNext(), []);
+	useEffect(() => {
+		if (isCodingAnimationComplete && isDataImportComplete == 'complete') {
+			setTimeout(() => {
+				setLoadingStep(false);
+				nextStep();
+			}, 50);
+		}
+		// if data was unsupported
+		else if (isCodingAnimationComplete && isDataImportComplete == 'unsupported') {
+			setTimeout(() => {
+				// TODO: show a message that the cor is unsupported
+				// then, redirect documentation that shows the supported colleges
+				// then, email will be sent when the college is supported
+			}, 50);
+		} else if (isCodingAnimationComplete && isDataImportComplete == 'failed') {
+			setTimeout(() => {
+				// TODO: show a message that the cor import failed with internal server error
+				// then, redirect to activeStep2 to try uplading again
+			}, 50);
+		}
+	}, [isDataImportComplete, isCodingAnimationComplete]);
 
 	const StepperComponent = () => {
 		const Steps = [
@@ -142,7 +192,7 @@ function Setup() {
 			);
 		}
 
-		function UploadDropdown() {
+		function UploadDrop() {
 			return (
 				<Dropfile
 					onComplete={(responsePackage) => {
@@ -160,12 +210,7 @@ function Setup() {
 			return (
 				<Typing
 					textData={JSON.stringify(responsePackage, null, 4)}
-					onAnimationComplete={() =>
-						setTimeout(() => {
-							setLoadingStep(false);
-							nextStep();
-						}, 50)
-					}
+					onAnimationComplete={() => setCodingAnimationComplete(true)}
 				/>
 			);
 		}
@@ -201,7 +246,7 @@ function Setup() {
 								{activeStep === 2 && <CodingAnimation />}
 								{activeStep === 3 && <RedirectAnimation />}
 							</div>
-							{activeStep === 1 && <UploadDropdown />}
+							{activeStep === 1 && <UploadDrop />}
 						</Container>
 					</div>
 				</>
@@ -218,7 +263,7 @@ function Setup() {
 					<StepperIndicator />
 					<div>
 						<Container size='xs' mt={-10}>
-							{activeStep === 1 && <UploadDropdown />}
+							{activeStep === 1 && <UploadDrop />}
 							{activeStep === 2 && <CodingAnimation />}
 							{activeStep === 3 && <RedirectAnimation />}
 						</Container>

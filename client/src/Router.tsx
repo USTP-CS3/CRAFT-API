@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { useContext } from 'react';
-import { TokenContext } from './provider/TokenProvider';
+import { AccountContext } from './provider/AccountProvider';
 
 import { Setup } from './pages/Setup';
 import { Landing } from './pages/Landing';
 import { Dashboard } from './pages/Dashboard';
 
 export function Router() {
-	const { Account } = useContext(TokenContext);
+	const { UserAccount, UserData } = useContext(AccountContext);
 
 	/**
 	 * App is the main component of the application.
@@ -17,11 +17,11 @@ export function Router() {
 	 * Other routes not in app are public and can be accessed by anyone.
 	 */
 	let App =
-		Account === 'none' ? (
+		UserData == null ? (
 			<Landing />
-		) : Account === 'setup' ? (
+		) : UserData == 'setup' ? (
 			<Setup />
-		) : Account != null ? (
+		) : UserData != null ? (
 			<Dashboard />
 		) : null;
 

@@ -1,19 +1,9 @@
 import axios from 'axios';
 import { useRef, useState, useEffect, useContext } from 'react';
-import {
-	Text,
-	Group,
-	Button,
-	Flex,
-	Space,
-	Checkbox,
-	LoadingOverlay,
-	rem,
-	useMantineTheme,
-} from '@mantine/core';
+import { Text, Group, Button, Flex, Space, Checkbox, rem, useMantineTheme } from '@mantine/core';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { IconCloudUpload, IconX, IconCheck, IconDownload } from '@tabler/icons-react';
-import { TokenContext } from '../provider/TokenProvider';
+import { AccountContext } from '../provider/AccountProvider';
 import classes from '../styles/Dropzone.module.css';
 
 export function Dropfile({ onComplete }: { onComplete: (res: any) => void }) {
@@ -28,7 +18,7 @@ export function Dropfile({ onComplete }: { onComplete: (res: any) => void }) {
 	const [isAgree, setAgree] = useState(false);
 	const [File, setFile] = useState<File | null>(null);
 
-	const { Token } = useContext(TokenContext);
+	const { UserToken } = useContext(AccountContext);
 
 	const handleDrop = (files: File[]) => {
 		// handle only the first file
@@ -51,7 +41,7 @@ export function Dropfile({ onComplete }: { onComplete: (res: any) => void }) {
 			// set the token in the header for axios requests
 			const config = {
 				headers: {
-					Authentication: `Bearer ${Token}`,
+					Authentication: `Bearer ${UserToken}`,
 				},
 			};
 
@@ -61,7 +51,7 @@ export function Dropfile({ onComplete }: { onComplete: (res: any) => void }) {
 
 			// send a POST request using Axios
 			axios
-				.post('http://localhost:5000/api/student/setup', form, config)
+				.post('http://localhost:5000/api/student/post_extract_corpdf', form, config)
 				.then((res: any) => {
 					setResponse(res);
 					setSuccess(true);
