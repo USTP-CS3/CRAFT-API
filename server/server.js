@@ -38,7 +38,7 @@ App.use(cors());
  * authenticate is used by a specific route if it needs to be authenticated
  *
  */
-App.use(Google.verify, Logger.listen);
+App.use(Google.verify, StudentMiddleware.has_self_data, Logger.listen);
 
 // get self student data
 App.get(
