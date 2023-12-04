@@ -46,7 +46,8 @@ function post_extract_corpdf(req, res) {
 					req.craft.message = 'Unsupported College';
 					req.craft.package = { studentData, subjectData };
 					// TODO: save the file to misc/extract_unsupported folder
-					res.status(200).json(req.craft);
+					res.status(500).json(req.craft);
+					return;
 				}
 
 				// if college is CITC, respond with a success message
@@ -65,14 +66,14 @@ function post_extract_corpdf(req, res) {
 				}
 			})
 			.catch((error) => {
-				req.craft.message = 'Extraction Failed';
+				req.craft.message = 'Extraction Failed: ' + error.message;
 				req.craft.package = null;
 				// TODO: save the file to misc/extract_failed folder
 				res.status(500).json(req.craft);
 				return;
 			});
 	} catch (error) {
-		req.craft.message = 'Upload Failed';
+		req.craft.message = 'Upload Failed' + error.message;
 		req.craft.package = null;
 		res.status(500).json(req.craft);
 		return;
