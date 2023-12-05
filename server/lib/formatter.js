@@ -1,27 +1,119 @@
-const Formatter = (studentData) => {
-	if (studentData.studentData.department === 'B.S. in Computer Science') {
-		studentData.studentData.department = 'CS';
-	} else if (studentData.studentData.department === 'B.S. in Information Technology') {
-		studentData.studentData.department = 'IT';
-	} else if (studentData.studentData.department === 'B.S. in Data Science') {
-		studentData.studentData.department = 'DS';
-	} else studentData.studentData.department = 'TCM';
+const toTitleCase = (phrase) => {
+	// Remove titles like Mr., Ms., Dr., Engr, Eng from the beginning of the name
+	let nameNoTitle = phrase.replace(/^(mr\.|ms\.|dr\.|engr|eng)\s+/i, '');
 
-	if (studentData.studentData.college === 'COLLEGE OF INFORMATION TECHNOLOGY AND COMPUTING') {
-		studentData.studentData.college = 'CITC';
-	}
+	return nameNoTitle
+		.toLowerCase()
+		.split(' ')
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ')
+		.replace(/ +/g, ' ');
+};
 
-	if (studentData.studentData.middle_initial.length > 1) {
-		studentData.studentData.middle_initial = null;
-	}
+function convertTo24HourFormat(timeString) {
+	const [time, period] = timeString.split(' ');
+	let [hours, minutes] = time.split(':');
 
-	if (studentData.studentData.first_name.split(' ').pop().length === 1) {
-		const first_name = studentData.studentData.first_name.split(' ').slice(0, -1);
+	hours = period === 'PM' && hours < 12 ? parseInt(hours, 10) + 12 : parseInt(hours, 10) % 12;
 
-		studentData.studentData.first_name = first_name.join(' ');
-	}
+	return `${hours.toString().padStart(2, '0')}:${minutes}`;
+}
 
-	return studentData;
+const Formatter = ({ studentData, subjectData }) => {
+	const courseFormat = {
+		'B.S. in Data Science': 'DS',
+		'B.S. in Computer Science': 'CS',
+		'B.S. in Information Technology': 'IT',
+		'B.S. in Technology Communication Management': 'TCM',
+	};
+
+	const collegeFormat = {
+		'COLLEGE OF INFORMATION TECHNOLOGY AND COMPUTING': 'CITC',
+	};
+
+	const format = {
+		'1st': '1',
+		'2nd': '2',
+		'3rd': '3',
+		'4th': '4',
+		'5th': '5',
+	};
+
+	const yearLevelFormat = (yearLevel) => {
+		const year = yearLevel.split(' ')[0];
+		return format[year];
+	};
+
+	const semYearFormat = (semYear) => {
+		const semester = semYear.split(' ')[0];
+		const year = semYear.split(' ').at(-1).split('-')[0];
+
+		return {
+			semester: format[semester],
+			year: year,
+		};
+	};
+
+	const { semester, year } = semYearFormat(studentData.academic_year);
+
+	let Schedule = [];
+	let Faculty = [];
+	let Subject = [];
+	let Room = [];
+
+	subjectData.forEach((subj) => {
+		const subject = {
+			course_code: subj.code,
+			description: subj.subject,
+			lecture_units: subj.lecture,
+			lab_units: subj.laboratory,
+		};
+		Subject.push(subject);
+
+		subj.schedule.forEach((sched) => {
+			const faculty = {
+				name: toTitleCase(sched.instructor),
+			};
+
+			const room = {
+				description: sched.room,
+			};
+
+			const schedule = {
+				section: subj.section,
+				start_time: convertTo24HourFormat(sched.timeStart),
+				end_time: convertTo24HourFormat(sched.timeEnd),
+				day: sched.weekday,
+				semester: semester,
+				year: year,
+				SubjectRef: subject,
+				FacultyRef: faculty,
+				RoomRef: room.name == '' ? null : room,
+			};
+
+			Schedule.push(schedule);
+			Faculty.push(faculty);
+
+			if (room.description != '') Room.push(room);
+		});
+	});
+
+	const Student = {
+		first_name: toTitleCase(studentData.first_name.trim()),
+		last_name: toTitleCase(studentData.last_name),
+		auth_name: 'google_name_here',
+		age: studentData.age,
+		gender: studentData.gender,
+		year_level: yearLevelFormat(studentData.year_level),
+		nationality: studentData.nationality,
+		department: courseFormat[studentData.department],
+		email: 'google_email_here',
+		middle_initial: studentData.middle_initial,
+		contact_no: studentData.contact,
+	};
+
+	const Format = { Student, Schedule, Faculty, Subject, Room };
+	return Format;
 };
 
 export default Formatter;

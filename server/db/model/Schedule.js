@@ -25,7 +25,7 @@ const fields = {
 	},
 
 	day: {
-		type: DataTypes.ENUM('M', 'T', 'W', 'H', 'F', 'S'),
+		type: DataTypes.ENUM('M', 'T', 'W', 'Th', 'F', 'S'),
 		allowNull: false,
 	},
 
@@ -48,12 +48,12 @@ const fields = {
 
 const options = {
 	// composite unique constraint
-	indexes: [
-		{
-			fields: ['section', 'day', 'semester', 'year'],
-			unique: true,
-		},
-	],
+	// indexes: [
+	// 	{
+	// 		fields: ['section', 'day', 'semester', 'year', 'SubjectId', 'FacultyId', 'RoomId'],
+	// 		unique: true,
+	// 	},
+	// ],
 };
 
 const Schedule = Database.session.define('Schedule', fields, options);
