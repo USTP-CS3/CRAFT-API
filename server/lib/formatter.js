@@ -19,6 +19,26 @@ function convertTo24HourFormat(timeString) {
 	return `${hours.toString().padStart(2, '0')}:${minutes}`;
 }
 
+function removeDuplicateObjects(array) {
+	const uniqueObjects = [];
+	const seenObjects = new Set();
+
+	for (const obj of array) {
+		// Convert the object to a string for easy comparison
+		const stringifiedObject = JSON.stringify(obj);
+
+		// Check if we have seen this object before
+		if (!seenObjects.has(stringifiedObject)) {
+			// Add the object to the result array
+			uniqueObjects.push(obj);
+			// Mark the object as seen
+			seenObjects.add(stringifiedObject);
+		}
+	}
+
+	return uniqueObjects;
+}
+
 const Formatter = ({ studentData, subjectData }) => {
 	const courseFormat = {
 		'B.S. in Data Science': 'DS',
@@ -55,6 +75,23 @@ const Formatter = ({ studentData, subjectData }) => {
 	};
 
 	const { semester, year } = semYearFormat(studentData.academic_year);
+
+	const Student = {
+		attribute: {
+			first_name: toTitleCase(studentData.first_name.trim()),
+			last_name: toTitleCase(studentData.last_name),
+			auth_name: 'google_name_here',
+			age: studentData.age,
+			gender: studentData.gender,
+			year_level: yearLevelFormat(studentData.year_level),
+			nationality: studentData.nationality,
+			department: courseFormat[studentData.department],
+			email: 'google_email_here',
+			middle_initial: studentData.middle_initial,
+			contact_no: studentData.contact,
+		},
+		associate: {},
+	};
 
 	let Schedule = [];
 
@@ -95,24 +132,7 @@ const Formatter = ({ studentData, subjectData }) => {
 		});
 	});
 
-	const Student = {
-		attribute: {
-			first_name: toTitleCase(studentData.first_name.trim()),
-			last_name: toTitleCase(studentData.last_name),
-			auth_name: 'google_name_here',
-			age: studentData.age,
-			gender: studentData.gender,
-			year_level: yearLevelFormat(studentData.year_level),
-			nationality: studentData.nationality,
-			department: courseFormat[studentData.department],
-			email: 'google_email_here',
-			middle_initial: studentData.middle_initial,
-			contact_no: studentData.contact,
-		},
-		associate: {},
-	};
-
-	const Format = { Student, Schedule };
+	const Format = { Student, Schedule, removeDuplicateObjects };
 	return Format;
 };
 
