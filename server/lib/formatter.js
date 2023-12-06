@@ -1,11 +1,11 @@
-const toTitleCase = (phrase) => {
+const toTitleCase = phrase => {
 	// Remove titles like Mr., Ms., Dr., Engr, Eng from the beginning of the name
 	let nameNoTitle = phrase.replace(/^(mr\.|ms\.|dr\.|engr|eng)\s+/i, '');
 
 	return nameNoTitle
 		.toLowerCase()
 		.split(' ')
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(' ')
 		.replace(/ +/g, ' ');
 };
@@ -39,12 +39,12 @@ const Formatter = ({ studentData, subjectData }) => {
 		'5th': '5',
 	};
 
-	const yearLevelFormat = (yearLevel) => {
+	const yearLevelFormat = yearLevel => {
 		const year = yearLevel.split(' ')[0];
 		return format[year];
 	};
 
-	const semYearFormat = (semYear) => {
+	const semYearFormat = semYear => {
 		const semester = semYear.split(' ')[0];
 		const year = semYear.split(' ').at(-1).split('-')[0];
 
@@ -57,62 +57,62 @@ const Formatter = ({ studentData, subjectData }) => {
 	const { semester, year } = semYearFormat(studentData.academic_year);
 
 	let Schedule = [];
-	let Faculty = [];
-	let Subject = [];
-	let Room = [];
 
-	subjectData.forEach((subj) => {
+	subjectData.forEach(subj => {
 		const subject = {
 			course_code: subj.code,
 			description: subj.subject,
 			lecture_units: subj.lecture,
 			lab_units: subj.laboratory,
 		};
-		Subject.push(subject);
 
-		subj.schedule.forEach((sched) => {
+		subj.schedule.forEach(sched => {
 			const faculty = {
 				name: toTitleCase(sched.instructor),
 			};
 
 			const room = {
-				description: sched.room,
+				description: sched.room == '' ? null : sched.room,
 			};
 
 			const schedule = {
-				section: subj.section,
-				start_time: convertTo24HourFormat(sched.timeStart),
-				end_time: convertTo24HourFormat(sched.timeEnd),
-				day: sched.weekday,
-				semester: semester,
-				year: year,
-				SubjectRef: subject,
-				FacultyRef: faculty,
-				RoomRef: room.name == '' ? null : room,
+				attribute: {
+					section: 'C2SC',
+					start_time: convertTo24HourFormat(sched.timeStart),
+					end_time: convertTo24HourFormat(sched.timeEnd),
+					day: sched.weekday,
+					semester: semester,
+					year: year,
+				},
+				associate: {
+					Subject: subject,
+					Faculty: faculty,
+					Room: room,
+				},
 			};
 
 			Schedule.push(schedule);
-			Faculty.push(faculty);
-
-			if (room.description != '') Room.push(room);
 		});
 	});
 
 	const Student = {
-		first_name: toTitleCase(studentData.first_name.trim()),
-		last_name: toTitleCase(studentData.last_name),
-		auth_name: 'google_name_here',
-		age: studentData.age,
-		gender: studentData.gender,
-		year_level: yearLevelFormat(studentData.year_level),
-		nationality: studentData.nationality,
-		department: courseFormat[studentData.department],
-		email: 'google_email_here',
-		middle_initial: studentData.middle_initial,
-		contact_no: studentData.contact,
+		attribute: {
+			first_name: toTitleCase(studentData.first_name.trim()),
+			last_name: toTitleCase(studentData.last_name),
+			auth_name: 'google_name_here',
+			age: studentData.age,
+			gender: studentData.gender,
+			year_level: yearLevelFormat(studentData.year_level),
+			nationality: studentData.nationality,
+			department: courseFormat[studentData.department],
+			email: 'google_email_here',
+			middle_initial: studentData.middle_initial,
+			contact_no: studentData.contact,
+		},
+		associate: {},
 	};
 
-	const Format = { Student, Schedule, Faculty, Subject, Room };
+	const Format = { Student, Schedule };
 	return Format;
 };
 
