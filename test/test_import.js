@@ -10,8 +10,8 @@ import Database from '../server/db/database.js';
 Extractor.getCorInfo('../server/misc/cor2.pdf').then(({ studentData, subjectData }) => {
 	const Format = Formatter({ studentData, subjectData });
 
-	// Student.belongsToMany(Schedule, { through: 'StudentSchedule' });
-	// Schedule.belongsToMany(Student, { through: 'StudentSchedule' });
+	Student.belongsToMany(Schedule, { through: 'StudentSchedule' });
+	Schedule.belongsToMany(Student, { through: 'StudentSchedule' });
 	// Student.hasMany(Request);
 	// Request.belongsTo(Student);
 	Subject.hasMany(Schedule);
@@ -21,129 +21,78 @@ Extractor.getCorInfo('../server/misc/cor2.pdf').then(({ studentData, subjectData
 	Room.hasMany(Schedule);
 	Schedule.belongsTo(Room);
 
-	// const student = Student.findOrCreate({ where: Format.Student.attribute });
-
 	Database.session
 		.sync({ force: true })
-		// insert subject, faculty, room
-		.then(result => {
-			return Promise.all([
-				Subject.bulkCreate(
-					Format.Schedule.map(schedule => schedule.associate.Subject),
-					{ ignoreDuplicates: true, returning: ['id'] }
-				),
+		/**
+		 * Create or find ID's of Subject, Faculty, and Room
+		 */
+		.then(session => {
+			const subjects = Format.removeDuplicateObjects(
+				Format.Schedule.map(schedule => schedule.associate.Subject)
+			);
 
-				Faculty.bulkCreate(
-					Format.Schedule.map(schedule => schedule.associate.Faculty),
-					{ ignoreDuplicates: true, returning: ['id'] }
-				),
-				Room.bulkCreate(
-					Format.Schedule.map(schedule => schedule.associate.Room),
-					{ ignoreDuplicates: true, returning: ['id'] }
-				),
+			const facultys = Format.removeDuplicateObjects(
+				Format.Schedule.map(schedule => schedule.associate.Faculty)
+			);
+
+			const rooms = Format.removeDuplicateObjects(
+				Format.Schedule.map(schedule => schedule.associate.Room)
+
+				// some schedules have no rooms, so we remove them if null
+			).filter(room => room.description != null);
+
+			return Promise.all([
+				Subject.bulkCreate(subjects, { ignoreDuplicates: true, returning: true }),
+				Faculty.bulkCreate(facultys, { ignoreDuplicates: true, returning: true }),
+				Room.bulkCreate(rooms, { ignoreDuplicates: true, returning: true }),
 			]);
 		})
+		/**
+		 * Create the student instance
+		 * Create or find schedules then assign the ID's of Subject, Faculty, and Room
+		 * Schedule's RoomId is nullable, so we check if the room is null or not
+		 */
 		.then(promises => {
-			promises.forEach(promise => {
-				console.log(promise);
-				// promise.forEach(result => {
-				// 	console.log(result);
-				// });
+			const [subjects, facultys, rooms] = promises;
+
+			const schedules = Format.Schedule.map(schedule => {
+				// assign the id of subject to schedule attribute
+				const subject = subjects.find(
+					subject => subject.course_code == schedule.associate.Subject.course_code
+				);
+				schedule.attribute.SubjectId = subject.id;
+
+				// assign the id of faculty to schedule attribute
+				const faculty = facultys.find(
+					faculty => faculty.name == schedule.associate.Faculty.name
+				);
+				schedule.attribute.FacultyId = faculty.id;
+
+				// if schedule's room is not null, assign its id attribute
+				if (schedule.associate.Room.description != null) {
+					const room = rooms.find(
+						room => room.description == schedule.associate.Room.description
+					);
+					schedule.attribute.RoomId = room.id;
+				}
+
+				return schedule.attribute;
 			});
 
-			// get schedule foreign keys by finding or creating the associated models
-			// return Promise.all(
-			// Format.Schedule.map(async schedule => {
-			// const subject = await Subject.findOne({
-			// 	where: schedule.associate.Subject,
-			// })[0]; // [instance, isCreated]
-
-			// const faculty = await Faculty.findOne({
-			// 	where: schedule.associate.Faculty,
-			// })[0]; // [instance, isCreated]
-
-			// const room =
-			// 	schedule.associate.Room.description !== null
-			// 		? await Room.findOne({
-			// 				where: schedule.associate.Room,
-			// 		  })[0] // [instance, isCreated]
-			// 		: null;
-
-			// return {
-			// 	attributes: schedule.attribute,
-			// 	relations: { subject, faculty, room },
-			// };
-			// })
-			// );
+			return Promise.all([
+				Student.create(Format.Student.attribute),
+				Schedule.bulkCreate(schedules, { ignoreDuplicates: true, returning: true }),
+			]);
 		})
-		// .then(schedules => {
-		// 	return Promise.all(
-		// 		schedules.map(async schedule => {
-		// 			const { subject, faculty, room } = schedule.relations;
-
-		// 			if (room) schedule.attributes.roomId = room.id;
-		// 			schedule.attributes.SubjectId = subject.id;
-		// 			schedule.attributes.FacultyId = faculty.id;
-
-		// 			return await Schedule.findOrCreate({ where: schedule.attributes });
-		// 		})
-		// 	);
-		// })
-		// .then(createdSchedules => {
-		// 	// Handle the result if needed
-		// })
-		.catch(error => {
-			// Handle errors
-			console.error(error);
-		});
-
-	// Database.session
-	// 	.sync()
-	// 	.then(function () {
-	// 		const room = Room.findOrCreate({ where: { description: 'Room 2' } });
-	// 		const faculty = Faculty.findOrCreate({ where: { name: 'Joe Landicho' } });
-	// 		const subject = Subject.findOrCreate({
-	// 			where: {
-	// 				course_code: 'CS3 101',
-	// 				description: 'Introduction to Computer Networks',
-	// 				lecture_units: 3,
-	// 				lab_units: 1,
-	// 			},
-	// 		});
-	// 		return Promise.all([room, subject, faculty]);
-	// 	})
-	// 	.then(function ([room, subject, faculty]) {
-	// 		const [room, isNewRoom] = room;
-	// 		const [subject, isNewSubject] = subject;
-	// 		const [faculty, isNewFaculty] = faculty;
-
-	// 		return Schedule.findOrCreate({
-	// 			where: {
-	// 				section: 'A',
-	// 				start_time: '07:00:00',
-	// 				end_time: '08:00:00',
-	// 				day: 'W',
-	// 				semester: '1',
-	// 				year: '2020',
-	// 				SubjectId: subject.id,
-	// 				FacultyId: faculty.id,
-	// 				RoomId: room.id,
-	// 			},
-	// 		});
-	// 	})
-	// 	.then((schedule) => {
-	// 		Student.addSchedule(schedule);
-
-	// 		console.log('Database synced and records created successfully.');
-	// 	})
-	// 	.catch((err) => {
-	// 		console.error('Error syncing database and creating records:', err);
-	// 	});
-
-	//
+		/**
+		 * Assign the schedules to student
+		 */
+		.then(promises => {
+			const [student, schedules] = promises;
+			return student.setSchedules(schedules);
+		})
+		.catch(console.error);
 });
-// .catch(error => console.log(error));
-
 /**
 
 studentData: {
