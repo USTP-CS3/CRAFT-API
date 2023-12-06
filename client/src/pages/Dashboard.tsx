@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { TokenContext } from '@/provider/TokenProvider/TokenProvider';
+import { AccountContext } from '../provider/AccountProvider';
 
 const Dashboard = () => {
-	const { Google } = useContext(TokenContext);
+	const { Google } = useContext(AccountContext);
 
 	return (
 		<>

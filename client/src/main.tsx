@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom/client';
 import { MantineProvider } from '@mantine/core';
 import { Router } from './Router';
 import { theme } from './theme';
-import { TokenProvider } from './provider/TokenProvider/TokenProvider';
+import { AccountProvider } from './provider/AccountProvider';
 
 function Main() {
 	return (
 		<MantineProvider theme={theme}>
-			<TokenProvider>
+			<AccountProvider>
 				<Router />
-			</TokenProvider>
+			</AccountProvider>
 		</MantineProvider>
 	);
 }

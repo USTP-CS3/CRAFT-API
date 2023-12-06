@@ -12,25 +12,52 @@ import {
 	Divider,
 	Flex,
 } from '@mantine/core';
+import { useContext, useState } from 'react';
 import { IconCheck } from '@tabler/icons-react';
-import image from './craft.svg';
-import classes from './landing.module.css';
+import { AccountContext } from '../provider/AccountProvider';
+import { ResizeProvider } from '../provider/ResizeProvider';
 
-import { Contributor } from '../Contributor/Contributor';
+import image from '../assets/craft.svg';
+import styles from '../styles/Landing.module.css';
 
-import { useContext } from 'react';
-import { TokenContext } from '../../provider/TokenProvider/TokenProvider';
+function Contributor() {
+	const mobileWidthPx = 380;
+	const [isMobile, setIsMobile] = useState(window.innerWidth < mobileWidthPx);
+
+	const handleResize = (width: number) => {
+		window.innerWidth < mobileWidthPx ? setIsMobile(true) : setIsMobile(false);
+	};
+
+	return (
+		<ResizeProvider callback={handleResize}>
+			<Container size='xs' pt={0} pb={20}>
+				{isMobile ? (
+					<Center>
+						<Text c='dimmed' size='xs'>
+							Developed by the Computer Science Student Society (CS³)
+						</Text>
+					</Center>
+				) : (
+					<Divider
+						label='Developed by the Computer Science Student Society (CS³)'
+						labelPosition='center'
+					/>
+				)}
+			</Container>
+		</ResizeProvider>
+	);
+}
 
 export function Landing() {
-	const { Google } = useContext(TokenContext);
+	const { Google } = useContext(AccountContext);
 
 	return (
 		<Container size='md'>
 			<Flex align='center' justify='space-around' direction='column'>
 				<Flex align='center' style={{ minHeight: '90vh', width: '100%' }}>
-					<div className={classes.inner}>
-						<div className={classes.content}>
-							<Title className={classes.title}>
+					<div className={styles.inner}>
+						<div className={styles.content}>
+							<Title className={styles.title}>
 								Collaborative Resource And Feedback Tool
 							</Title>
 
@@ -67,7 +94,7 @@ export function Landing() {
 								<Button
 									radius='xl'
 									size='md'
-									className={classes.control}
+									className={styles.control}
 									onClick={() => Google.login()}>
 									Get Started
 								</Button>
@@ -76,7 +103,7 @@ export function Landing() {
 									variant='default'
 									radius='xl'
 									size='md'
-									className={classes.control}
+									className={styles.control}
 									onClick={() => Google.logout()}>
 									Documentation
 								</Button>
@@ -85,7 +112,7 @@ export function Landing() {
 
 						<Center>
 							{' '}
-							<Image src={image} className={classes.image} />{' '}
+							<Image src={image} className={styles.image} />{' '}
 						</Center>
 					</div>
 				</Flex>

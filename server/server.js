@@ -16,9 +16,10 @@ import express from 'express';
 import { Logger } from './routes/middleware/logger.js';
 import { Google } from './routes/middleware/google.js';
 import { StudentController } from './routes/controller/student.js';
+import { StudentMiddleware } from './routes/middleware/student.js';
 
 // multer allows us to read the file from the request
-const Upload = multer({ storage: multer.memoryStorage() });
+const Uploaded = multer({ storage: multer.memoryStorage() });
 
 // express app
 const App = express();
@@ -32,18 +33,40 @@ App.use(cors());
 
 /**
  *
- * verify initializes the auth middleware and it creates the req.craft
+ * verify initializes the authenticate middleware and it creates the req.craft
  * listen reads the output of verify and logs all requests to database
- * auth is used by a specific route if it needs to be authenticated
+ * authenticate is used by a specific route if it needs to be authenticated
  *
  */
-App.use(Google.verify, Logger.listen);
+App.use(Google.verify, StudentMiddleware.has_self_data, Logger.listen);
 
 // get self student data
-App.get('/api/student', Google.auth, StudentController.get_data);
+App.get(
+	'/api/student/get_self_data',
+	Google.authenticate,
+	StudentMiddleware.has_self_data,
+	StudentController.get_self_data
+);
 
-// download student certificate of registration from the request
-App.post('/api/student/setup', Google.auth, Upload.single('corpdf'), StudentController.post_setup);
+// extract data from uploaded student cor pdf
+// and temporarily store it to temp_cor_extract object
+// if unsupported, save to temp folder for future debugging
+App.post(
+	'/api/student/post_extract_corpdf',
+	Google.authenticate,
+	Uploaded.single('corpdf'),
+	StudentMiddleware.has_empty_data,
+	StudentController.post_extract_corpdf
+);
+
+// saves temp_cor_extract file to misc
+// and inserts data to the database
+App.post(
+	'/api/student/post_import_corpdf',
+	Google.authenticate,
+	StudentMiddleware.has_empty_data,
+	StudentController.post_import_corpdf
+);
 
 const PORT = 5000;
 App.listen(PORT, () => {

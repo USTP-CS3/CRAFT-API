@@ -15,21 +15,6 @@ const fields = {
 		allowNull: false,
 	},
 
-	room_no: {
-		type: DataTypes.STRING(25),
-		allowNull: true,
-	},
-
-	floor_no: {
-		type: DataTypes.TINYINT.UNSIGNED,
-		allowNull: true,
-	},
-
-	building_no: {
-		type: DataTypes.TINYINT.UNSIGNED,
-		allowNull: true,
-	},
-
 	created_at: {
 		type: DataTypes.DATE,
 		allowNull: false,

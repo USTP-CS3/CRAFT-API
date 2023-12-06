@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Code } from '@mantine/core';
-import './Typing.css'; // Add your CSS file for styling
+import '../styles/Typing.css';
 
 interface TypingProps {
-	jsonData: string;
+	textData: string;
 	onAnimationComplete?: () => void;
 }
 
-const Typing: React.FC<TypingProps> = ({ jsonData, onAnimationComplete }) => {
+const Typing: React.FC<TypingProps> = ({ textData, onAnimationComplete }) => {
 	const [animatedJson, setAnimatedJson] = useState<string[]>([]);
 	const containerRef = useRef(null);
 
 	useEffect(() => {
-		const lines = jsonData.split('\n');
+		const lines = textData.split('\n');
 		let index = 0;
 		const container = containerRef.current;
 
@@ -24,7 +24,7 @@ const Typing: React.FC<TypingProps> = ({ jsonData, onAnimationComplete }) => {
 			});
 
 			if (container) {
-				container.scrollTop = container.scrollHeight; // Scroll to the bottom
+				(container as HTMLElement).scrollTop = (container as HTMLElement).scrollHeight; // Scroll to the bottom
 			}
 
 			if (index === lines.length) {
@@ -36,7 +36,7 @@ const Typing: React.FC<TypingProps> = ({ jsonData, onAnimationComplete }) => {
 		}, 12); // Set the interval to a minimum value (around 4 milliseconds)
 
 		return () => clearInterval(intervalId);
-	}, [jsonData, onAnimationComplete]);
+	}, [textData, onAnimationComplete]);
 
 	return (
 		<Code block ref={containerRef} className='json-typing-animation'>
