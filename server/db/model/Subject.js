@@ -37,6 +37,15 @@ const fields = {
 	},
 };
 
-const Subject = Database.session.define('Subject', fields);
+// composite unique constraint
+const options = {
+	uniqueKeys: {
+		unique_schedule: {
+			fields: ['course_code', 'lecture_units', 'lab_units'],
+		},
+	},
+};
+
+const Subject = Database.session.define('Subject', fields, options);
 
 export default Subject;

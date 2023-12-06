@@ -46,14 +46,13 @@ const fields = {
 	},
 };
 
+// composite unique constraint
 const options = {
-	// composite unique constraint
-	// indexes: [
-	// 	{
-	// 		fields: ['section', 'day', 'semester', 'year', 'SubjectId', 'FacultyId', 'RoomId'],
-	// 		unique: true,
-	// 	},
-	// ],
+	uniqueKeys: {
+		unique_schedule: {
+			fields: ['section', 'day', 'semester', 'year', 'SubjectId', 'FacultyId', 'RoomId'],
+		},
+	},
 };
 
 const Schedule = Database.session.define('Schedule', fields, options);
