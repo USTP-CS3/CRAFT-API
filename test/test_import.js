@@ -7,9 +7,7 @@ import Faculty from '../server/db/model/Faculty.js';
 import Formatter from '../server/lib/formatter.js';
 import Database from '../server/db/database.js';
 
-Extractor.getCorInfo('../server/misc/cor2.pdf').then(({ studentData, subjectData }) => {
-	const Format = Formatter({ studentData, subjectData });
-
+Extractor.getCorInformation('../server/misc/cor2.pdf').then(({ studentData, scheduleData }) => {
 	Student.belongsToMany(Schedule, { through: 'StudentSchedule' });
 	Schedule.belongsToMany(Student, { through: 'StudentSchedule' });
 	// Student.hasMany(Request);
@@ -21,23 +19,22 @@ Extractor.getCorInfo('../server/misc/cor2.pdf').then(({ studentData, subjectData
 	Room.hasMany(Schedule);
 	Schedule.belongsTo(Room);
 
+	let Relation = Extractor.formatCorRelation({ studentData, scheduleData });
+
 	Database.session
 		.sync({ force: true })
 		/**
 		 * Create or find ID's of Subject, Faculty, and Room
 		 */
 		.then(session => {
-			const subjects = Format.removeDuplicateObjects(
-				Format.Schedule.map(schedule => schedule.associate.Subject)
+			const subjects = Formatter.removeDuplicateObjects(
+				Relation.Schedule.map(schedule => schedule.associate.Subject)
 			);
-
-			const facultys = Format.removeDuplicateObjects(
-				Format.Schedule.map(schedule => schedule.associate.Faculty)
+			const facultys = Formatter.removeDuplicateObjects(
+				Relation.Schedule.map(schedule => schedule.associate.Faculty)
 			);
-
-			const rooms = Format.removeDuplicateObjects(
-				Format.Schedule.map(schedule => schedule.associate.Room)
-
+			const rooms = Formatter.removeDuplicateObjects(
+				Relation.Schedule.map(schedule => schedule.associate.Room)
 				// some schedules have no rooms, so we remove them if null
 			).filter(room => room.description != null);
 
@@ -55,7 +52,7 @@ Extractor.getCorInfo('../server/misc/cor2.pdf').then(({ studentData, subjectData
 		.then(promises => {
 			const [subjects, facultys, rooms] = promises;
 
-			const schedules = Format.Schedule.map(schedule => {
+			const schedules = Relation.Schedule.map(schedule => {
 				// assign the id of subject to schedule attribute
 				const subject = subjects.find(
 					subject => subject.course_code == schedule.associate.Subject.course_code
@@ -80,7 +77,7 @@ Extractor.getCorInfo('../server/misc/cor2.pdf').then(({ studentData, subjectData
 			});
 
 			return Promise.all([
-				Student.create(Format.Student.attribute),
+				Student.create(Relation.Student.attribute),
 				Schedule.bulkCreate(schedules, { ignoreDuplicates: true, returning: true }),
 			]);
 		})
