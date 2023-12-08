@@ -3,10 +3,9 @@ import Database from '../database.js';
 
 const fields = {
 	id: {
-		type: DataTypes.INTEGER.UNSIGNED,
+		type: DataTypes.STRING(10),
 		allowNull: false,
 		primaryKey: true,
-		autoIncrement: true,
 	},
 
 	first_name: {
