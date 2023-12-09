@@ -5,65 +5,91 @@ import Schedule from '../server/db/model/Schedule.js';
 import Room from '../server/db/model/Room.js';
 import Faculty from '../server/db/model/Faculty.js';
 import Formatter from '../server/lib/formatter.js';
+import Database from '../server/db/database.js';
 
-Extractor.getCorInfo('../server/misc/cor2.pdf')
-	.then(({ studentData, subjectData }) => {
-		const Format = Formatter({ studentData, subjectData });
+Extractor.getCorInformation('../server/misc/cor2.pdf').then(({ studentData, scheduleData }) => {
+	Student.belongsToMany(Schedule, { through: 'StudentSchedule' });
+	Schedule.belongsToMany(Student, { through: 'StudentSchedule' });
+	// Student.hasMany(Request);
+	// Request.belongsTo(Student);
+	Subject.hasMany(Schedule);
+	Schedule.belongsTo(Subject);
+	Faculty.hasMany(Schedule);
+	Schedule.belongsTo(Faculty);
+	Room.hasMany(Schedule);
+	Schedule.belongsTo(Room);
 
-		async function importData() {
-			try {
-				const student = await Student.findOrCreate({ where: Format.Student });
+	let Relation = Extractor.formatCorRelation({ studentData, scheduleData });
 
-				await Promise.all(
-					Format.Faculty.map(async (attr) => await Faculty.findOrCreate({ where: attr }))
+	Database.session
+		.sync({ force: true })
+		/**
+		 * Create or find ID's of Subject, Faculty, and Room
+		 */
+		.then(session => {
+			const subjects = Formatter.removeDuplicateObjects(
+				Relation.Schedule.map(schedule => schedule.associate.Subject)
+			);
+			const facultys = Formatter.removeDuplicateObjects(
+				Relation.Schedule.map(schedule => schedule.associate.Faculty)
+			);
+			const rooms = Formatter.removeDuplicateObjects(
+				Relation.Schedule.map(schedule => schedule.associate.Room)
+				// some schedules have no rooms, so we remove them if null
+			).filter(room => room.description != null);
+
+			return Promise.all([
+				Subject.bulkCreate(subjects, { ignoreDuplicates: true, returning: true }),
+				Faculty.bulkCreate(facultys, { ignoreDuplicates: true, returning: true }),
+				Room.bulkCreate(rooms, { ignoreDuplicates: true, returning: true }),
+			]);
+		})
+		/**
+		 * Create the student instance
+		 * Create or find schedules then assign the ID's of Subject, Faculty, and Room
+		 * Schedule's RoomId is nullable, so we check if the room is null or not
+		 */
+		.then(promises => {
+			const [subjects, facultys, rooms] = promises;
+
+			const schedules = Relation.Schedule.map(schedule => {
+				// assign the id of subject to schedule attribute
+				const subject = subjects.find(
+					subject => subject.course_code == schedule.associate.Subject.course_code
 				);
+				schedule.attribute.SubjectId = subject.id;
 
-				await Promise.all(
-					Format.Room.map(async (attr) => await Room.findOrCreate({ where: attr }))
+				// assign the id of faculty to schedule attribute
+				const faculty = facultys.find(
+					faculty => faculty.name == schedule.associate.Faculty.name
 				);
+				schedule.attribute.FacultyId = faculty.id;
 
-				await Promise.all(
-					Format.Subject.map(async (attr) => await Subject.findOrCreate({ where: attr }))
-				);
+				// if schedule's room is not null, assign its id attribute
+				if (schedule.associate.Room.description != null) {
+					const room = rooms.find(
+						room => room.description == schedule.associate.Room.description
+					);
+					schedule.attribute.RoomId = room.id;
+				}
 
-				await Promise.all(
-					Format.Schedule.map(async (attr) => {
-						const subject = await Subject.findOne({
-							where: attr.SubjectRef,
-							raw: true,
-							nest: true,
-						});
+				return schedule.attribute;
+			});
 
-						const faculty = await Faculty.findOne({
-							where: attr.FacultyRef,
-							raw: true,
-							nest: true,
-						});
-
-						const room = await Room.findOne({ where: attr.RoomRef, raw: true, nest: true });
-
-						delete attr.SubjectRef;
-						delete attr.FacultyRef;
-						delete attr.RoomRef;
-
-						if (subject != null) attr.SubjectId = 1;
-						if (faculty != null) attr.FacultyId = 1;
-						if (room != null) attr.RoomId = 1;
-
-						await Schedule.findOrCreate({ where: attr, include: [Faculty, Room, Subject] });
-					})
-				);
-
-				console.log('Import completed successfully.');
-			} catch (error) {
-				console.error('Error during import:', error);
-			}
-		}
-
-		importData();
-	})
-	.catch((error) => console.log(error));
-
+			return Promise.all([
+				Student.create(Relation.Student.attribute),
+				Schedule.bulkCreate(schedules, { ignoreDuplicates: true, returning: true }),
+			]);
+		})
+		/**
+		 * Assign the schedules to student
+		 */
+		.then(promises => {
+			const [student, schedules] = promises;
+			return student.setSchedules(schedules);
+		})
+		.catch(console.error);
+});
 /**
 
 studentData: {

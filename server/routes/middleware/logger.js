@@ -2,7 +2,7 @@
  * middleware for logging requests to the database
  *
  * req.craft object that contains the following:
- * - isValid: boolean
+ * - authenticated: boolean
  * - message: string
  * - account: object (contains the client id token info)
  * - package: object (contains the student data from the database)
