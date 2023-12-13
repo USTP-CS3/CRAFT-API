@@ -9,7 +9,6 @@ Student Scheduler &amp; Profiling System
    -  prettier: code formatter (set indent to 3)
    -  helium: nice icons for folders
    -  rest client: debug requests
-   -  mysql: database viewer
    -  make hidden: hide non dev files
 
 ## Getting Started: Client React.js
@@ -24,12 +23,12 @@ Student Scheduler &amp; Profiling System
 
 1. Clone this repository `git clone https://github.com/USTP-CS3/CRAFT-API.git`
 2. Install packages with `pnpm install`
-3. Make sure to config mysql credentials in `server/db/database.js`
-4. Run `pnpm sync` to sync Object-Relation models to the database
-5. Run `pnpm dev` to start express-nodemon development server.
-6. Change directory to `cd server`
+3. Run `pnpm sync` to create collections to the database
+4. Run `pnpm dev` to start express-nodemon development server.
+5. Change directory to `cd server`
 
-![image](https://github.com/USTP-CS3/CRAFT-API/assets/26486389/5b358685-d7db-4b7f-b78e-0f5fb6fe4c47)
+![image](https://github.com/USTP-CS3/CRAFT-API/assets/26486389/d4cc4728-e0e2-4ff7-b458-a371c7701f9d)
+
 
 ## Rationale
 
@@ -51,5 +50,3 @@ Here's how CRAFT API works:
 **Profiling**
 
 > The focal entity can select predefined questions to the target population and a survey form will be distributed to the students and collected to a database for analysis. The benefit of this rather than a regular survey can detect changes or patterns over time that could serve as an opening to potential research areas and development.
-
-![image](https://github.com/USTP-CSCORE/CRAFT-API/assets/26486389/efc210dc-7a39-45a6-9644-2c40d0037f77)
