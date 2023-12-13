@@ -11,10 +11,12 @@ const $jsonSchema = {
 		first_name: {
 			bsonType: 'string',
 			description: 'First name of faculty - Required.',
+			maxLength: 50,
 		},
 		last_name: {
 			bsonType: 'string',
 			description: 'Last name of faculty - Required.',
+			maxLength: 50,
 		},
 		created: {
 			bsonType: 'timestamp',

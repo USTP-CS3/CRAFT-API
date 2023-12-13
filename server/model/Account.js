@@ -5,14 +5,17 @@ const $jsonSchema = {
 		first_name: {
 			bsonType: 'string',
 			description: 'First name of account - Required.',
+			maxLength: 50,
 		},
 		last_name: {
 			bsonType: 'string',
 			description: 'Last name of account - Required.',
+			maxLength: 50,
 		},
 		email: {
 			bsonType: 'string',
 			description: 'Email of account - Required.',
+			maxLength: 100,
 		},
 		picture: {
 			bsonType: 'string',
@@ -25,6 +28,7 @@ const $jsonSchema = {
 		cert_hash: {
 			bsonType: 'string',
 			description: 'Certificate hash of account - Optional.',
+			maxLength: 65, // SHA256
 		},
 		created: {
 			bsonType: 'timestamp',

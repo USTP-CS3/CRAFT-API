@@ -29,18 +29,22 @@ const $jsonSchema = {
 		first_name: {
 			bsonType: 'string',
 			description: 'First name of student - Required.',
+			maxLength: 50,
 		},
 		last_name: {
 			bsonType: 'string',
 			description: 'Last name of student - Required.',
+			maxLength: 50,
 		},
 		md_name: {
 			bsonType: 'string',
 			description: 'Middle name of student - Optional.',
+			maxLength: 1,
 		},
 		age: {
 			bsonType: 'int',
 			description: 'Age of student - Required.',
+			maximum: 100,
 		},
 		gender: {
 			bsonType: 'string',
@@ -55,6 +59,7 @@ const $jsonSchema = {
 		nationality: {
 			bsonType: 'string',
 			description: 'Nationality of student - Required.',
+			maxLength: 100,
 		},
 		contact: {
 			bsonType: 'string',

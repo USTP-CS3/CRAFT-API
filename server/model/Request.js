@@ -38,8 +38,9 @@ const $jsonSchema = {
 			description: 'Url of request - Required.',
 		},
 		status: {
-			bsonType: 'int',
+			bsonType: 'string',
 			description: 'Status of request - Required.',
+			maxLength: 3,
 		},
 		res_time: {
 			bsonType: 'double',

@@ -4,7 +4,8 @@ const $jsonSchema = {
 	properties: {
 		name: {
 			bsonType: 'string',
-			description: 'Course name - Required.',
+			description: 'Room name - Required.',
+			maxLength: 50,
 		},
 		created: {
 			bsonType: 'timestamp',

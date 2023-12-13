@@ -33,6 +33,7 @@ const $jsonSchema = {
 		section: {
 			bsonType: 'string',
 			description: 'Section of schedule - Required.',
+			maxLength: 50,
 		},
 		start_time: {
 			bsonType: 'date',
