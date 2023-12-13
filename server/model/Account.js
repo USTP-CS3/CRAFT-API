@@ -20,6 +20,7 @@ const $jsonSchema = {
 		picture: {
 			bsonType: 'string',
 			description: 'Url of account picture - Required.',
+			maxLength: 200,
 		},
 		cert_file: {
 			bsonType: 'binData',
