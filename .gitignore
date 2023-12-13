@@ -3,3 +3,5 @@ server/misc/*.pdf
 server/log/*.log
 pnpm-lock.yaml
 server/pb_data/*
+.env
+```
