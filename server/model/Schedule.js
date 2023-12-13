@@ -7,6 +7,7 @@ const $jsonSchema = {
 		'section',
 		'start_time',
 		'end_time',
+		'day',
 		'semester',
 		'year',
 		'created',
@@ -42,6 +43,11 @@ const $jsonSchema = {
 		end_time: {
 			bsonType: 'date',
 			description: 'End time of schedule - Required.',
+		},
+		day: {
+			bsonType: 'string',
+			description: 'Day of schedule - Required.',
+			enum: ['M', 'T', 'W', 'Th', 'F', 'S'],
 		},
 		semester: {
 			bsonType: 'int',
