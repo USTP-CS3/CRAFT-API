@@ -1,0 +1,43 @@
+.cardWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 auto;
+	width: 1000px;
+	max-width: 1200px;
+	padding: 0 1rem;
+}
+
+.responseCard {
+	text-align: center;
+	background-color: #fff;
+	border-radius: 0.5rem;
+	box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
+	margin: 1rem 0;
+	padding: 2rem;
+	width: 100%;
+}
+
+.ToolTipContent {
+	background-color: aquamarine;
+	font-size: 14px;
+	border-radius: 0.5rem;
+	padding: 10px;
+}
+
+.taskListHeader {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.taskListTableRow {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 300px;
+}
+
+.taskListTable {
+	border: solid 1px black;
+}
